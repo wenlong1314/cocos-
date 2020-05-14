@@ -1,6 +1,6 @@
 {
   "ver": "2.3.4",
-  "uuid": "ec8adfa6-bace-4c2d-9511-e20df600c6ee",
+  "uuid": "db8ceceb-9c43-4af2-a3e0-f55699a1fadd",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -13,7 +13,7 @@
   "subMetas": {
     "btngrey": {
       "ver": "1.0.4",
-      "uuid": "97fdbdb3-3395-46e2-b053-5a564c3fd7f9",
+      "uuid": "f2200286-2e1e-4564-98c7-8c2238e6efee",
       "rawTextureUuid": "ec8adfa6-bace-4c2d-9511-e20df600c6ee",
       "trimType": "auto",
       "trimThreshold": 1,

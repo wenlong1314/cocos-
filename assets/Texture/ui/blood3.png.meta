@@ -1,6 +1,6 @@
 {
   "ver": "2.3.4",
-  "uuid": "3f72a2ad-dc22-4013-92a7-c5ca38d19acc",
+  "uuid": "f2e74825-1f03-4f17-b341-b2277d9bcc87",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -13,7 +13,7 @@
   "subMetas": {
     "blood3": {
       "ver": "1.0.4",
-      "uuid": "77dd2a6e-66bd-40ae-bad2-973cca991130",
+      "uuid": "48fac9d8-51d4-44ed-9335-193fe8e835da",
       "rawTextureUuid": "3f72a2ad-dc22-4013-92a7-c5ca38d19acc",
       "trimType": "auto",
       "trimThreshold": 1,
