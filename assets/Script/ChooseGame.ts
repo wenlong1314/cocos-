@@ -1,0 +1,42 @@
+import { _cdn2} from "./global";
+import Settings from "./Settings";
+import { prefabs } from "./prefabs";
+import GMPage from "./GMPage";
+import ChooseBox from "./ChooseBox";
+import { main } from "./Main";
+
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class ChooseGame extends cc.Component {
+    public mengceng: cc.Node;
+    public btn: cc.Node;
+    private chooseBox: ChooseBox;
+    private chooseGame: ChooseGame;
+    public init(): void {
+        console.log("init ChooseGame");
+        this.chooseGame = this;
+        this.btn = this.node.getChildByName("btn");
+        this.mengceng = this.node.getChildByName("mengceng");
+        this.chooseBox = this.node.getChildByName("chooseBox").getComponent(ChooseBox);
+        this.btn.getChildByName("label").getComponent(cc.Label).string = main.chooseGameName;
+        this.btn.on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
+            this.mengceng.active = true;
+            this.chooseBox.node.active = true;
+            this.chooseBox.init(main.gamesNameShow, this.chooseGame);
+        });
+        this.mengceng.on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
+            this.mengceng.active = false;
+            this.chooseBox.node.active = false;
+        });
+        this.show();
+    }
+    public show(): void {
+        this.node.active = true;
+    }
+    public hide(): void {
+        this.node.active = false;
+    }
+
+
+}

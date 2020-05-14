@@ -1,0 +1,25 @@
+{
+	"小游戏": false,
+	"engine": "Cocos",
+	"ips": [
+		"tiny.qimiaosenlin.com"
+	],
+	"cdn": "cdn-tiny.qimiaosenlin.com/cdn/",
+	"删除CDN上不对应的资源": true,
+	"让改storageTime": true,
+	"a": false,
+	"ignores": [],
+	"excludes": [
+		"assets/",
+		"build/",
+		"publish/",
+		"library/",
+		"local/",
+		"packages/",
+		"settings/",
+		"temp/"
+	],
+	"tinyPNG": [],
+	"res": {},
+	"enableCDN": false
+}
