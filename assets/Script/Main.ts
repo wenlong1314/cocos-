@@ -10,6 +10,7 @@ import SharePage from "./SharePage";
 
 const { ccclass, property } = cc._decorator;
 export let main: Main;
+declare let company: string;
 @ccclass
 export default class Main extends cc.Component {
     private configPage: ConfigPage;
@@ -42,12 +43,55 @@ export default class Main extends cc.Component {
         this.chooseGame = this.node.getChildByName("chooseGame").getComponent(ChooseGame);
 
         this.pages = ["configPage", "gmPage", "removeStorage", "cpaPage", "sharePage"];
-        this.chooseGameName = "主公贼有钱";
-        this.gamesNameShow = ["主公贼有钱", "火柴人冲突", "火柴人你瞅啥", "数字之城", "怪物冲突",
-            "怪物工厂2", "天天上楼梯", "我开坦克贼6", "射了个箭", "我特能耍剑", "丧尸干仗", "天天炸飞机"];
-        this.gameNames = new Map<string, string>([["主公贼有钱", "push"], ["火柴人冲突", "sword"], ["火柴人你瞅啥", "sword2"],
-        ["数字之城", "sudoku"], ["怪物冲突", "rush2sword"], ["怪物工厂2", "rush2"], ["天天上楼梯", "climb"], ["我开坦克贼6", "tank"],
-        ["射了个箭", "sword3"], ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"], ["天天炸飞机", "plane"]]);
+
+        console.log(`company=${company}`);
+        //  console.log(`company=${window["company"]}`);
+
+        switch (company) {
+            case "梦嘉":
+                this.chooseGameName = "火柴人冲突";
+                this.gamesNameShow = ["火柴人冲突", "怪物工厂2", "射了个箭"];
+                this.gameNames = new Map<string, string>([
+                    ["火柴人冲突", "sword"], ["怪物工厂2", "rush2"], ["射了个箭", "sword3"]
+                ]);
+                break;
+            case "雷霆":
+                this.chooseGameName = "火柴人你瞅啥";
+                this.gamesNameShow = ["火柴人你瞅啥", "我特能耍剑", "丧尸干仗"];
+                this.gameNames = new Map<string, string>([
+                    ["火柴人你瞅啥", "sword2"], ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"]]);
+                break;
+            case "奇妙":
+                this.chooseGameName = "主公贼有钱";
+                this.gamesNameShow = ["主公贼有钱", "火柴人冲突", "火柴人你瞅啥", "数字之城", "怪物冲突",
+                    "怪物工厂2", "天天上楼梯", "我开坦克贼6", "射了个箭", "我特能耍剑", "丧尸干仗", "天天炸飞机"];
+                this.gameNames = new Map<string, string>([["主公贼有钱", "push"], ["火柴人冲突", "sword"], ["火柴人你瞅啥", "sword2"],
+                ["数字之城", "sudoku"], ["怪物冲突", "rush2sword"], ["怪物工厂2", "rush2"], ["天天上楼梯", "climb"], ["我开坦克贼6", "tank"],
+                ["射了个箭", "sword3"], ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"], ["天天炸飞机", "plane"]]);
+                break;
+            default:
+                this.chooseGameName = "主公贼有钱";
+                this.gamesNameShow = ["主公贼有钱"];
+                this.gameNames = new Map<string, string>([["主公贼有钱", "push"]]);
+                break;
+
+        }
+        // if (true) {
+        //     this.chooseGameName = "主公贼有钱";
+        //     this.gamesNameShow = ["主公贼有钱", "火柴人冲突", "火柴人你瞅啥", "数字之城", "怪物冲突",
+        //         "怪物工厂2", "天天上楼梯", "我开坦克贼6", "射了个箭", "我特能耍剑", "丧尸干仗", "天天炸飞机"];
+        //     this.gameNames = new Map<string, string>([["主公贼有钱", "push"], ["火柴人冲突", "sword"], ["火柴人你瞅啥", "sword2"],
+        //     ["数字之城", "sudoku"], ["怪物冲突", "rush2sword"], ["怪物工厂2", "rush2"], ["天天上楼梯", "climb"], ["我开坦克贼6", "tank"],
+        //     ["射了个箭", "sword3"], ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"], ["天天炸飞机", "plane"]]);
+        // } else {
+        //     this.chooseGameName = "主公贼有钱";
+        //     this.gamesNameShow = ["主公贼有钱", "火柴人冲突", "火柴人你瞅啥", "数字之城", "怪物冲突",
+        //         "怪物工厂2", "天天上楼梯", "我开坦克贼6", "射了个箭", "我特能耍剑", "丧尸干仗", "天天炸飞机"];
+        //     this.gameNames = new Map<string, string>([["主公贼有钱", "push"], ["火柴人冲突", "sword"], ["火柴人你瞅啥", "sword2"],
+        //     ["数字之城", "sudoku"], ["怪物冲突", "rush2sword"], ["怪物工厂2", "rush2"], ["天天上楼梯", "climb"], ["我开坦克贼6", "tank"],
+        //     ["射了个箭", "sword3"], ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"], ["天天炸飞机", "plane"]]);
+        // }
+
 
         this.chooseGameID = this.gameNames.get(this.chooseGameName);
 

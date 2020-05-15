@@ -4,7 +4,7 @@ export const chName: string = "GM";
 const _host: string = "https://tiny.qimiaosenlin.com/";
 export const _cdn2: string = _host + "cdn/";
 
-
+//export let company: string;
 export const webRoot: string = _cdn2 + gameName + "/web/";
 export const gameRoot: string = _host + gameName + "/";
 export const cdn: string = "https://cdn-tiny.qimiaosenlin.com/cdn/";
