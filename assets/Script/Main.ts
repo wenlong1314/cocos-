@@ -1,4 +1,4 @@
-import { _cdn2, get, post } from "./global";
+import { _cdn2, get } from "./global";
 import Settings from "./Settings";
 import ConfigPage from "./ConfigPage";
 import removeStorage from "./removeStorage";
@@ -14,10 +14,10 @@ export let main: Main;
 export default class Main extends cc.Component {
     private configPage: ConfigPage;
     private removeStorage: removeStorage;
-    private chooseGame: ChooseGame;
     private gmPage: GMPage;
     private cpaPage: CPAPage;
     private sharePage: SharePage;
+    private chooseGame: ChooseGame;
     private pages: Array<any>;
     private tabs: Array<cc.Node>;
     public settings: Settings;

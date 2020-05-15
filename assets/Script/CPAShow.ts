@@ -1,4 +1,4 @@
-import { _cdn2, get, post, GameCode, CpaData, myCRC32 } from "./global";
+import { _cdn2,  CpaData, myCRC32 } from "./global";
 import { prefabs } from "./prefabs";
 import CPAPage from "./CPAPage";
 

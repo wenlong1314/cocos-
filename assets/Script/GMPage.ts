@@ -1,4 +1,4 @@
-import { _cdn2, get, post, GameCode } from "./global";
+import { _cdn2, post, GameCode } from "./global";
 import Settings from "./Settings";
 import ChooseBox from "./ChooseBox";
 import CodeShow from "./CodeShow";

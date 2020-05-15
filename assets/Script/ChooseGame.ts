@@ -1,7 +1,4 @@
 import { _cdn2} from "./global";
-import Settings from "./Settings";
-import { prefabs } from "./prefabs";
-import GMPage from "./GMPage";
 import ChooseBox from "./ChooseBox";
 import { main } from "./Main";
 

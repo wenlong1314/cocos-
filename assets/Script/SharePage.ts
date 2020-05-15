@@ -1,7 +1,5 @@
 import { _cdn2, get, post, GameCode, CpaData, myCRC32 } from "./global";
-import Settings, { Share } from "./Settings";
-import ChooseBox from "./ChooseBox";
-import CodeShow from "./CodeShow";
+import { Share } from "./Settings";
 import { main } from "./Main";
 
 import ShareShow from "./ShareShow";

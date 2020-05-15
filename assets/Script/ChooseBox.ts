@@ -1,6 +1,6 @@
 import { _cdn2, chooseBoxPage } from "./global";
 import { prefabs } from "./prefabs";
-import Main, { main } from "./Main";
+import  { main } from "./Main";
 
 const { ccclass, property } = cc._decorator;
 

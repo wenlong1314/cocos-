@@ -1,5 +1,4 @@
 import { _cdn2, get, post } from "./global";
-import Settings from "./Settings";
 import { main } from "./Main";
 
 const { ccclass, property } = cc._decorator;

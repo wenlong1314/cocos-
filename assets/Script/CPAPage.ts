@@ -1,4 +1,4 @@
-import { _cdn2, get, post, GameCode, CpaData, myCRC32 } from "./global";
+import { _cdn2, get, post, CpaData } from "./global";
 import { main } from "./Main";
 import CPAShow from "./CPAShow";
 

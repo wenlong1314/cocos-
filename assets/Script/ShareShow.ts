@@ -1,9 +1,6 @@
 import { _cdn2, get, post, GameCode, CpaData, myCRC32 } from "./global";
 
 import { prefabs } from "./prefabs";
-import GMPage from "./GMPage";
-import { main } from "./Main";
-import CPAPage from "./CPAPage";
 import SharePage from "./SharePage";
 import { Share } from "./Settings";
 
