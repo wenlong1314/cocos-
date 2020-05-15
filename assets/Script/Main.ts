@@ -23,7 +23,6 @@ export default class Main extends cc.Component {
     public settings: Settings;
     public chooseGameID: string;
     public currPageIndex: number;
-
     public chooseGameName: string;
     public gamesNameShow: Array<any>;
     public gameNames: Map<string, string>;
