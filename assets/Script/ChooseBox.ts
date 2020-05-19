@@ -9,7 +9,6 @@ export default class ChooseBox extends cc.Component {
 
     public init(arrs: Array<string>, gmPage: chooseBoxPage): void {
         console.log("init ChooseBox");
-
         this.node.removeAllChildren();
 
         for (let index in arrs) {

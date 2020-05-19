@@ -119,7 +119,7 @@ window.boot = function () {
     // jsList
     var jsList = settings.jsList;
 
-    var bundledScript = webPath + 'src/' + ( settings.debug ? 'project.dev.js' : 'project.js' );
+    var bundledScript = webPath + 'src/' + ( settings.debug ? 'project.dev.js' : 'project.js' )+"?"+Math.round(Math.random()*100+1);
     if (jsList) {
         jsList = jsList.map(function (x) {
             return webPath + 'src/' + x;

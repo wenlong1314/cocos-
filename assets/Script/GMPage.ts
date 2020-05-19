@@ -37,8 +37,6 @@ export default class GMPage extends cc.Component {
 
         this.arrs = ["+金币", "+钻石", "+体力", "+视频", "+提示"];
         //  this.codeArrays = [["111", "222", "333"], ["222", "123", "123"], ["333", "123", "123"], ["444", "123", "123"]];
-
-
         this.inputs = [this.input1, this.input2];
         this.mengceng.on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
             this.chooseBox.hide();

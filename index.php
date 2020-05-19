@@ -5,10 +5,11 @@
 		"GMCocos","GMCocosGMCocosGMCocosGMCocos"
 	);
 	$sys->cacheVersion=5;
-	
+
+
 	$sys->isDD=false;
 	$sys->isTB=false;
-	$sys->isWX=false;
+//	$sys->isWX=false;
 	$testing=true;
 	
 	$webPath="https://cdn-tiny.qimiaosenlin.com/cdn/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe718m5d5b72490319047/web/";
@@ -83,7 +84,7 @@
 			height: 100%;
 		}
 	</style>
-	<!--script src="https://cdn-tiny.qimiaosenlin.com/cdn/common/vconsole.min.js"></script>
+	<script src="https://cdn-tiny.qimiaosenlin.com/cdn/common/vconsole.min.js"></script>
 	<script>
 		// 初始化vConsole
 		window.vConsole = new window.VConsole({
@@ -96,7 +97,7 @@
 			// console.log("on clearLog");
 		  }
 		});
-	</script-->
+	</script>
 	<script>
 		var _hmt = _hmt || [];
 		(function() {
@@ -176,12 +177,35 @@
 			signature: "<?php echo $signPackage["signature"] ?>",
 			jsApiList: [
 				"onMenuShareTimeline",
-				"onMenuShareAppMessage"
+				"onMenuShareAppMessage",
+				'chooseImage',
+				'previewImage',
+				'uploadImage',
+				'downloadImage'
 			]
 		});
 		wx.ready(function(){
 			wxIsReady=true;
 			setShare(wxTitle, wxImgUrl);
+			/*
+			wx.checkJsApi({
+				jsApiList: [
+					'getNetworkType',
+					'chooseImage',
+					'previewImage',
+					'uploadImage',
+					'downloadImage',
+					'previewImage'
+				],
+				success: function(res) {
+					alert(JSON.stringify(res));
+				},
+				fail:function(){
+					alert("失败");
+				}
+			});
+			*/
+			
 		});
 		function setShare(wxTitle, wxImgUrl){
 			console.log("setShare wxTitle="+wxTitle+", wxImgUrl="+wxImgUrl);
@@ -223,6 +247,7 @@
 				}
 			});
 		}
+		
 	</script>
 <?php } ?>
 </head>
@@ -231,7 +256,7 @@
 	<script src="https://cdn-tiny.qimiaosenlin.com/cdn/common/jquery-1.11.2.min.js"></script>
 	<canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
 	<script src="<?php echo $webPath ?>src/settings.js" charset="utf-8"></script>
-	<script src="<?php echo $webPath ?>main.js" charset="utf-8"></script>
+	<script src="<?php echo $webPath ?>main.js?<?php echo $sys->cacheVersion?>" charset="utf-8"></script>
 	<script type="text/javascript">
 	(function () {
 

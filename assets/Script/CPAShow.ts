@@ -1,9 +1,9 @@
-import { _cdn2,  CpaData, myCRC32 } from "./global";
+import { _cdn2, CpaData, myCRC32 } from "./global";
 import { prefabs } from "./prefabs";
 import CPAPage from "./CPAPage";
 
 const { ccclass, property } = cc._decorator;
-
+declare let wx: any;
 @ccclass
 export default class CPAShow extends cc.Component {
 
@@ -88,7 +88,20 @@ export default class CPAShow extends cc.Component {
 
             img.node.on(cc.Node.EventType.TOUCH_START, () => {
                 this.currImg = img;
-                this.imgInput.click();
+                if (window["wx"]) {
+                    console.log("调取微信接口");
+                    wx.chooseImage({
+                        success: function (res) {
+                            console.log("成功");
+                            // 5.2 图片预览
+                        },
+                        fail: function (res) {
+                            console.log("失败");
+                        }
+                    });
+                } else {
+                    this.imgInput.click();
+                }
             })
             btn.on(cc.Node.EventType.TOUCH_START, () => {
                 arrs.splice((Number(index)), 1);

@@ -2,7 +2,7 @@ import { _cdn2, get, post } from "./global";
 import { main } from "./Main";
 
 const { ccclass, property } = cc._decorator;
-
+declare let wx: any;
 @ccclass
 export default class removeStorage extends cc.Component {
 
@@ -20,9 +20,40 @@ export default class removeStorage extends cc.Component {
         this.input2 = this.node.getChildByName("input2").getComponent(cc.EditBox);
 
         this.submit.children[0].on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
-            post({ op: "removeStorage", game: main.chooseGameID, openId: this.openId }, rsp => {
-                alert(rsp.message);
-            });
+
+
+            // wx.chooseImage({
+            //     count: 1, // 默认9
+            //     sizeType: ['original'], // 可以指定是原图还是压缩图，默认二者都有
+            //     sourceType: ['album'], // 可以指定来源是相册还是相机，默认二者都有
+            //     success: function (res) {
+            //         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+            //         var tempFilePaths = res.tempFilePaths;
+            //         console.log("tempFilePaths" + tempFilePaths);
+            //     },
+            //     fail: function (res) {
+            //         console.log("失败");
+            //     },
+            // })
+            if (window["wx"]) {
+                console.log("调取微信接口");
+                wx.chooseImage({
+                    success: function (res) {
+                        console.log("成功");
+                        // 5.2 图片预览
+                    },
+                    fail: function (res) {
+                        console.log(res);
+                    }
+                });
+            } else {
+                post({ op: "removeStorage", game: main.chooseGameID, openId: this.openId }, rsp => {
+                    alert(rsp.message);
+                });
+            }
+
+
+
         });
 
         this.inputs = [this.input1, this.input2];
