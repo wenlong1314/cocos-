@@ -1,4 +1,4 @@
-import { _cdn2, get, post, CpaData } from "./global";
+import { _cdn2, get, post, CpaData, getDrewCanvas } from "./global";
 import { main } from "./Main";
 import CPAShow from "./CPAShow";
 
@@ -17,6 +17,7 @@ export default class CPAPage extends cc.Component {
     public cpaName: string;
     public imgDatas: Array<Array<string>> = [];
     public reqCpaData: any;
+    public cpbNames: Array<string>;
     public init(): void {
         console.log("init CPAPage");
         this.cpaPage = this;
@@ -41,6 +42,7 @@ export default class CPAPage extends cc.Component {
             this.showSubmit();
         });
         this.updata()
+        this.postUrl("", () => { });
     }
     public updata(): void {
         console.log("更新cpaShow", main.chooseGameID);
@@ -132,6 +134,7 @@ export default class CPAPage extends cc.Component {
         let gameIcon2Array = [];
         let hutuiqiangArray = [];
         let iosArray = [];
+        this.cpbNames = [];
         this.reqCpaData.data["addturnlist"] = {};
         for (let item in this.cpaArray) {
             let curr = this.cpaArray[item];
@@ -146,6 +149,7 @@ export default class CPAPage extends cc.Component {
             currdata[item]["otherBanner2Url"] = "";
             currdata[item]["otherInsertUrl"] = "";
             currdata[item]["otherName"] = curr.name;
+            this.cpbNames.push(curr.name);
             if (curr.cpa1) {
                 gameIcon1Array.push(item);
             }
@@ -174,8 +178,8 @@ export default class CPAPage extends cc.Component {
             this.reqCpaData["苹果不显示"] = iosArray;
         }
         console.log("待上传数据")
-        console.log(this.reqCpaData)
-
+        console.log(this.cpaArray)
+        this.submitCPB();
         this.submitCPA()
     }
     public submitCPA(): void {
@@ -196,7 +200,59 @@ export default class CPAPage extends cc.Component {
                 alert("失败");
             }
         });
+
     }
+    public submitCPB(): void {
+        console.log(this.cpbNames);
+        this.drewTxt(this.cpbNames);
+        //   this.drewImg(this.cpbNames);
+    }
+    public drewTxt(arrs: Array<string>): void {
+        let drewCanvas = getDrewCanvas();
+        const ctx = drewCanvas.getContext("2d");
+        ctx.font = "24px 微软雅黑";
+        ctx.fillStyle = "#4774CB";
+        //去重
+        let NameRectMap = new Map();
+        for (let index in arrs) {
+            if (!NameRectMap.has(arrs[index])) {
+                let y = parseInt(index) * 30;
+                ctx.fillText(arrs[index], 755, y + 26);
+                let txt = ctx.measureText(arrs[index]);
+                NameRectMap.set(arrs[index], [755, y, Math.round(txt.width), Math.round(txt.actualBoundingBoxAscent + txt.actualBoundingBoxDescent)]);
+            }
+        }
+        console.log(drewCanvas.toDataURL());
+        // todo 保存图片，压缩图片
+        //   URL.createObjectURL(blob_data)
+        // get({
+        //     url: " https://tinypng.com/images/panda-happy.png"
+        // }, () => {
 
+        // });
+    }
+    public postUrl(url, onComplete: (rsp: any) => void): void {
 
+        console.log("post " + url);
+        let xhr: XMLHttpRequest = new XMLHttpRequest();
+        xhr.open("post", "https://api.tinify.com/shrink", true);
+
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.setRequestHeader('Authorization', 'Basic YXBpOmFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6MDEyMzQ1');
+        xhr.onload = () => {
+            if (xhr.response) {
+                console.log("post " + url + " 成功！");
+                console.log(xhr.response);
+            } else {
+                console.error("post " + url + " 失败！");
+            }
+        };
+        let a = {
+            source: {
+                "url": "https://tinypng.com/images/panda-happy.png"
+            }
+        }
+        xhr.send(JSON.stringify(a));
+
+    }
 }

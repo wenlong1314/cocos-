@@ -31,7 +31,7 @@ export default class Main extends cc.Component {
     public gameNames2: { [key: string]: string } = { "天天炸飞机": "plane" };
     private settingFlag: boolean = false;
     private prefabsFlag: boolean = false;
-    protected onLoad(): void {
+    protected async onLoad(): Promise<void> {
         main = this;
         console.log("init main");
         window["main"] = this;
@@ -101,27 +101,39 @@ export default class Main extends cc.Component {
             });
         }
 
-        prefabs.init(() => {
-            console.log("拉取预制体成功");
-            this.settingFlag = true;
-            this.pageInit();
+        let promise1 = this.prefabsLoad().then(() => {
+            console.log("任务1成功")
         });
-
-        get({ url: _cdn2 + this.chooseGameID + "/web/settings.json?" + new Date().getTime() }, (rsp: Settings) => {
-            this.settings = rsp;
-            this.prefabsFlag = true;
+        let promise2 = this.getSetting().then(() => {
+            console.log("任务2成功")
+        });;
+        Promise.all([promise1, promise2]).then(() => {
+            console.log("任务完成");
             this.pageInit();
-        });
+        })
 
     }
     public pageInit(): void {
-        if (this.settingFlag && this.prefabsFlag) {
-            this.chooseGame.init();
-            for (let index in this.pages) {
-                this[this.pages[index]].init();
-            }
-            this.tab(0);
+        this.chooseGame.init();
+        for (let index in this.pages) {
+            this[this.pages[index]].init();
         }
+        this.tab(0);        
+    }
+    public prefabsLoad(): Promise<string> {
+        return new Promise((rs, rj) => {
+            prefabs.init(() => { });
+            rs();
+        })
+    }
+
+    public getSetting(): Promise<string> {
+        return new Promise((rs, rj) => {
+            get({ url: _cdn2 + this.chooseGameID + "/web/settings.json?" + new Date().getTime() }, (rsp: Settings) => {
+                this.settings = rsp;
+                rs();
+            });
+        })
     }
 
     public gameUpdata(): void {
@@ -139,14 +151,6 @@ export default class Main extends cc.Component {
             callback(num1, num2);
         }, time);
         //this.getPrimise("1",(res)=>{},1)
-    }
-    public async getPrimise(url, resolve:(res:any)=>void, reject) {
-
-        return new Promise((resolve, reject) => {
-            get({ url: url }, (rsp: Settings) => {
-                resolve();
-            });
-        })
     }
     public getTime(): string {
         let time = new Date();

@@ -1,4 +1,4 @@
-import { _cdn2, CpaData, myCRC32 } from "./global";
+import { _cdn2, CpaData, myCRC32, get, getDrewCanvas } from "./global";
 import { prefabs } from "./prefabs";
 import CPAPage from "./CPAPage";
 
@@ -35,9 +35,10 @@ export default class CPAShow extends cc.Component {
             let checkbox4 = item.getChildByName("checkbox4").getComponent(cc.Toggle);
             let btn = item.getChildByName("btn");
             if (arrs[index].urlBase64) {
-                // console.log("新增的数据")
-                this.base64ShowImg(arrs[index].urlBase64, arrs[index].imgUrl, img);
+                console.log("新增的数据")
+                //this.base64ShowImg(arrs[index].urlBase64, arrs[index].imgUrl, img);
             } else if (arrs[index].imgUrl) {
+                let that = this;
                 // console.log("动态加载图片的方法")
                 var url = "https://cdn-tiny.qimiaosenlin.com/cdn/cpa/" + arrs[index].imgUrl;//图片路径
                 // cc.loader
@@ -45,6 +46,9 @@ export default class CPAShow extends cc.Component {
                 cc.loader.load(url, function (err, Texture2D) {
                     //  console.log(err)
                     img.spriteFrame = new cc.SpriteFrame(Texture2D);
+                    // console.log("Texture2D");
+                    //  console.log(Texture2D["_image"]);
+                    that.drewImg(Texture2D["_image"], parseInt(index) - 1, Texture2D.width, Texture2D.height);
                 });
             } else {
                 //  alert(index + "无图片数据");
@@ -148,6 +152,8 @@ export default class CPAShow extends cc.Component {
                     item.spriteFrame = new cc.SpriteFrame(texture);
                 } else {
                     that.currImg.spriteFrame = new cc.SpriteFrame(texture);
+                    let index = that.currImg.node.parent.getSiblingIndex();
+                    that.drewImg(img, index, texture.width, texture.height, true);
                 }
             } else {
                 alert("图片宽高不能超过150*150");
@@ -189,4 +195,18 @@ export default class CPAShow extends cc.Component {
             })
         }
     }
+    public drewImg(tmpImg: HTMLImageElement, index: number, width: number, height: number, fix?: boolean): void {
+        let drewCanvas = getDrewCanvas();
+        const ctx = drewCanvas.getContext("2d");
+       
+        let x = Math.floor(index / 6);
+        let y = index % 6;
+        fix && ctx.clearRect(x * 150, y * 150, 150, 150);
+
+        ctx.drawImage(tmpImg, 0, 0, width, height, x * 150, y * 150, width, height)
+        let drewUrlBase64 = drewCanvas.toDataURL();
+        fix && console.log(drewUrlBase64);
+        console.log("这是第" + index + "个" + x + "行" + y)
+    }
 }
+

@@ -123,6 +123,8 @@ export default class ShareShow extends cc.Component {
                     item.spriteFrame = new cc.SpriteFrame(texture);
                 } else {
                     that.currImg.spriteFrame = new cc.SpriteFrame(texture);
+                    //这里集合大图
+
                 }
             } else {
                 alert("图片宽高不能超过150*150");

@@ -128,7 +128,18 @@ function getPostURL(req: Req): string {
     console.error("木有 op 或 url");
     return "";
 }
-
+export function getDrewCanvas(): HTMLCanvasElement {
+    if (document.getElementById("drewCanvas")) {
+    } else {
+        var canvas = document.createElement('canvas');
+        document.body.appendChild(canvas);
+        canvas.width = 1024; //☜
+        canvas.height = 1024;
+        canvas.style.backgroundColor = '#FF0000';
+        canvas.id = "drewCanvas";
+    }
+    return document.getElementById("drewCanvas") as HTMLCanvasElement;
+}
 function requestComplete(req: Req, url: string, rsp: any, onComplete: (rsp: any) => void): void {
     if (typeof (rsp) == "string") {
         try {
