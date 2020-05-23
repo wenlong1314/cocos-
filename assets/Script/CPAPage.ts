@@ -1,4 +1,4 @@
-import { _cdn2, get, post, CpaData, getDrewCanvas } from "./global";
+import { _cdn2, get, post, CpaData, getDrewCanvas, gameRoot } from "./global";
 import { main } from "./Main";
 import CPAShow from "./CPAShow";
 
@@ -43,6 +43,7 @@ export default class CPAPage extends cc.Component {
         });
         this.updata()
         this.postUrl("", () => { });
+        this.postUrl2("", () => { });
     }
     public updata(): void {
         console.log("更新cpaShow", main.chooseGameID);
@@ -233,26 +234,18 @@ export default class CPAPage extends cc.Component {
     }
     public postUrl(url, onComplete: (rsp: any) => void): void {
 
-        console.log("post " + url);
-        let xhr: XMLHttpRequest = new XMLHttpRequest();
-        xhr.open("post", "https://api.tinify.com/shrink", true);
-
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.setRequestHeader('Authorization', 'Basic YXBpOmFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6MDEyMzQ1');
-        xhr.onload = () => {
-            if (xhr.response) {
+      
+       
+    }
+    public postUrl2(url, onComplete: (rsp: any) => void): void {
+        let data = {"0":"https://tinypng.com/images/panda-happy.png"};// url 写法
+        
+        $.post(gameRoot+"tinypng.php",data, rsp => {
+            if (rsp) {
                 console.log("post " + url + " 成功！");
-                console.log(xhr.response);
             } else {
                 console.error("post " + url + " 失败！");
             }
-        };
-        let a = {
-            source: {
-                "url": "https://tinypng.com/images/panda-happy.png"
-            }
-        }
-        xhr.send(JSON.stringify(a));
-
+        });
     }
 }
