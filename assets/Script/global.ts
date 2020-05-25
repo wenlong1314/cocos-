@@ -161,5 +161,4 @@ export function myCRC32(data) {
         c = table[(c ^ data[i]) & 0xff] ^ (c >>> 8);
     }
     return c ^ 0xffffffff;
-
 } 

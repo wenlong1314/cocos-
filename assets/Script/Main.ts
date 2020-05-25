@@ -122,8 +122,8 @@ export default class Main extends cc.Component {
     }
     public prefabsLoad(): Promise<string> {
         return new Promise((rs, rj) => {
-            prefabs.init(() => { });
-            rs();
+            prefabs.init(() => { rs(); });
+           
         })
     }
 

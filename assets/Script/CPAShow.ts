@@ -1,6 +1,7 @@
 import { _cdn2, CpaData, myCRC32, get, getDrewCanvas } from "./global";
 import { prefabs } from "./prefabs";
 import CPAPage from "./CPAPage";
+import CPBAPI from "./CPBAPI";
 
 const { ccclass, property } = cc._decorator;
 declare let wx: any;
@@ -12,11 +13,13 @@ export default class CPAShow extends cc.Component {
     private currImg: cc.Sprite;
     private imgInput: HTMLInputElement;
     private cpaPage: CPAPage;
+    private cpbAPI: CPBAPI;
     public init(arrs: Array<CpaData>, cpaPage: CPAPage, flag?: boolean): void {
         console.log("init CPAShow");
         this.cpaPage = cpaPage;
         this.view = this.node.getChildByName("view");
         this.content = this.view.getChildByName("content");
+        this.cpbAPI=new CPBAPI();
         this.content.removeAllChildren();
         this.content.height = (arrs.length - 1) * 160;
 
@@ -48,7 +51,7 @@ export default class CPAShow extends cc.Component {
                     img.spriteFrame = new cc.SpriteFrame(Texture2D);
                     // console.log("Texture2D");
                     //  console.log(Texture2D["_image"]);
-                    that.drewImg(Texture2D["_image"], parseInt(index) - 1, Texture2D.width, Texture2D.height);
+                    that.cpbAPI.drewImg(Texture2D["_image"], parseInt(index) - 1, Texture2D.width, Texture2D.height);
                 });
             } else {
                 //  alert(index + "无图片数据");
@@ -118,8 +121,6 @@ export default class CPAShow extends cc.Component {
         }
         this.show();
     }
-
-
     public show(): void {
         this.node.active = true;
     }
@@ -153,7 +154,7 @@ export default class CPAShow extends cc.Component {
                 } else {
                     that.currImg.spriteFrame = new cc.SpriteFrame(texture);
                     let index = that.currImg.node.parent.getSiblingIndex();
-                    that.drewImg(img, index, texture.width, texture.height, true);
+                    that.cpbAPI.drewImg(img, index, texture.width, texture.height, true);
                 }
             } else {
                 alert("图片宽高不能超过150*150");
@@ -190,23 +191,10 @@ export default class CPAShow extends cc.Component {
                         console.log("下载成功");
                         that.base64Img(this.result, resultFile);
                     };
-
                 }
             })
         }
     }
-    public drewImg(tmpImg: HTMLImageElement, index: number, width: number, height: number, fix?: boolean): void {
-        let drewCanvas = getDrewCanvas();
-        const ctx = drewCanvas.getContext("2d");
-       
-        let x = Math.floor(index / 6);
-        let y = index % 6;
-        fix && ctx.clearRect(x * 150, y * 150, 150, 150);
-
-        ctx.drawImage(tmpImg, 0, 0, width, height, x * 150, y * 150, width, height)
-        let drewUrlBase64 = drewCanvas.toDataURL();
-        fix && console.log(drewUrlBase64);
-        console.log("这是第" + index + "个" + x + "行" + y)
-    }
+  
 }
 

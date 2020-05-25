@@ -1,6 +1,9 @@
 import { _cdn2, get, post, CpaData, getDrewCanvas, gameRoot } from "./global";
 import { main } from "./Main";
 import CPAShow from "./CPAShow";
+import CPBAPI from "./CPBAPI";
+
+
 
 const { ccclass, property } = cc._decorator;
 
@@ -12,12 +15,15 @@ export default class CPAPage extends cc.Component {
     private cpaShow: CPAShow;
     public time: cc.Node;
     public cpaPage: CPAPage;
+    public cpbAPI: CPBAPI;
     //  public cpaArray: { [key: string]: CpaData };
     public cpaArray: Array<CpaData>;
     public cpaName: string;
     public imgDatas: Array<Array<string>> = [];
     public reqCpaData: any;
     public cpbNames: Array<string>;
+ 
+
     public init(): void {
         console.log("init CPAPage");
         this.cpaPage = this;
@@ -25,6 +31,7 @@ export default class CPAPage extends cc.Component {
         this.btn = this.node.getChildByName("btn");
         this.time = this.node.getChildByName("time");
         this.cpaShow = this.node.getChildByName("cpaShow").getComponent(CPAShow);
+        this.cpbAPI = new CPBAPI();
 
         this.time.getComponent(cc.Label).string = "刷新于：" + new Date().toLocaleString();
         this.btn.on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
@@ -42,8 +49,6 @@ export default class CPAPage extends cc.Component {
             this.showSubmit();
         });
         this.updata()
-        this.postUrl("", () => { });
-        this.postUrl2("", () => { });
     }
     public updata(): void {
         console.log("更新cpaShow", main.chooseGameID);
@@ -190,7 +195,6 @@ export default class CPAPage extends cc.Component {
         // console.log(this.imgDatas);
         // console.log(this.cpaArray);
         console.log("填写完毕开始上传");
-
         post({
             op: "setCPA", game: main.chooseGameID, cpaName: this.cpaName.split(/\.(\w+)/i)[0], cpa: JSON.stringify(this.reqCpaData), imgDatas: JSON.stringify(this.imgDatas)
         }, (res) => {
@@ -201,51 +205,13 @@ export default class CPAPage extends cc.Component {
                 alert("失败");
             }
         });
-
     }
     public submitCPB(): void {
         console.log(this.cpbNames);
-        this.drewTxt(this.cpbNames);
+        this.cpbAPI.cpbSubmit(this.cpbNames);
         //   this.drewImg(this.cpbNames);
     }
-    public drewTxt(arrs: Array<string>): void {
-        let drewCanvas = getDrewCanvas();
-        const ctx = drewCanvas.getContext("2d");
-        ctx.font = "24px 微软雅黑";
-        ctx.fillStyle = "#4774CB";
-        //去重
-        let NameRectMap = new Map();
-        for (let index in arrs) {
-            if (!NameRectMap.has(arrs[index])) {
-                let y = parseInt(index) * 30;
-                ctx.fillText(arrs[index], 755, y + 26);
-                let txt = ctx.measureText(arrs[index]);
-                NameRectMap.set(arrs[index], [755, y, Math.round(txt.width), Math.round(txt.actualBoundingBoxAscent + txt.actualBoundingBoxDescent)]);
-            }
-        }
-        console.log(drewCanvas.toDataURL());
-        // todo 保存图片，压缩图片
-        //   URL.createObjectURL(blob_data)
-        // get({
-        //     url: " https://tinypng.com/images/panda-happy.png"
-        // }, () => {
+    
 
-        // });
-    }
-    public postUrl(url, onComplete: (rsp: any) => void): void {
 
-      
-       
-    }
-    public postUrl2(url, onComplete: (rsp: any) => void): void {
-        let data = {"0":"https://tinypng.com/images/panda-happy.png"};// url 写法
-        
-        $.post(gameRoot+"tinypng.php",data, rsp => {
-            if (rsp) {
-                console.log("post " + url + " 成功！");
-            } else {
-                console.error("post " + url + " 失败！");
-            }
-        });
-    }
 }
