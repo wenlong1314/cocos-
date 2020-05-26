@@ -6,33 +6,39 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class CPBAPI {
-    public NameRectMap: any;
-    public ImgRectMap: any;
-    public namebottomRectMap: any;
+    public NameRectMap: Map<string, Array<number>> = new Map();
+    public static ImgRectMap: Map<number, Array<number>> = new Map();//new Map([[1,[2]]])
     public reqAllData: any;
-    public cpbSubmit(arrs: Array<string>, callback?: any) {
 
-        this.drewTxt(arrs);
-        let promise1 = this.postTinyImg(this.reqAllData).then(
+    public cpbSubmit(arrs: Array<string>, callback?: any) {
+        let that = this;
+
+        console.log(CPBAPI.ImgRectMap);
+        console.log(this.NameRectMap);
+
+        this.loadBottom("89b68afc-e961-480b-8fca-d5a82cef726e").then(
+            (Texture2D: any) => {
+                console.log(Texture2D["_image"]);
+                that.drewImg(Texture2D["_image"], -2, Texture2D.width, Texture2D.height);
+                this.drewTxt(arrs);
+            }, (err) => console.log(err)
+        ).then(
             () => {
-                console.log("提交cpb图集成功");
-            },
-            () => {
-                alert("提交cpb图集失败");
+                console.log("提交cpb图集开始")
+                let promise1 = this.postTinyImg(this.reqAllData).then(
+                    () => console.log("提交cpb图集成功"),
+                    () => alert("提交cpb图集失败")
+                )
+                let promise2 = this.postCPBCode(this.reqAllData).then(
+                    () => console.log("提交cpb数据成功"),
+                    () => alert("提交cpb数据失败")
+                )
+                Promise.all([promise1, promise2]).then((num) => {
+                    console.log("提交cpb成功");
+                }).catch(() => alert("提交cpb失败"))
             }
         )
-        let promise2 = this.postCPBCode(this.reqAllData).then(
-            () => {
-                console.log("提交cpb数据成功");
-            },
-            () => {
-                alert("提交cpb数据失败");
-            }
-        )
-        Promise.all([promise1, promise2]).then((num) => {
-            console.log("提交cpb成功");
-        }).catch(() => alert("提交cpb失败"))
-      
+
     }
 
     // 字是提交时填充大图
@@ -60,6 +66,16 @@ export default class CPBAPI {
         this.reqAllData = { "cpbAtlas": reqData, "cpbAtlasName": "cpbTmp" }
 
     }
+    public loadBottom(uuid: string): Promise<void> {
+        //文字底
+        return new Promise((rs, rj) => {
+            cc.loader.load({
+                uuid: uuid, type: 'uuid'
+            }, function (err, Texture2D) {
+                err ? rj(err) : rs(Texture2D);
+            })
+        })
+    }
     public postTinyImg(data): Promise<void> {
         // let data = { "0": "https://tinypng.com/images/panda-happy.png" };// url 写法
         return new Promise((rs, rj) => {
@@ -73,6 +89,10 @@ export default class CPBAPI {
                 }
             });
         })
+    }
+    public decodeCPBData(data): void {
+
+
     }
     public postCPBCode(data): Promise<void> {
         //1 准备数据，2上传，3调用
@@ -105,17 +125,20 @@ export default class CPBAPI {
     public drewImg(tmpImg: HTMLImageElement, index: number, width: number, height: number, fix?: boolean): void {
         let drewCanvas = this.getDrewCanvas();
         const ctx = drewCanvas.getContext("2d");
-
+        console.log(1);
         let x = Math.floor(index / 6);
         let y = index % 6;
         fix && ctx.clearRect(x * 150, y * 150, 150, 150);
-
-        ctx.drawImage(tmpImg, 0, 0, width, height, x * 150, y * 150, width, height)
-        this.ImgRectMap = new Map();
-        this.ImgRectMap.set(index, [x * 150, y * 150, width, height]);
+        if (index < -1) {
+            ctx.drawImage(tmpImg, 0, 0, width, height, 970, 970, width, height);// 文字底，固定
+        } else {
+            ctx.drawImage(tmpImg, 0, 0, width, height, x * 150, y * 150, width, height)
+        }
+        CPBAPI.ImgRectMap.set(index, [970, 970, width, height]);
         let drewUrlBase64 = drewCanvas.toDataURL();
-        fix && console.log(drewUrlBase64);
-        console.log("这是第" + index + "个" + x + "行" + y)
+        (fix || index < -1) && console.log(drewUrlBase64);
+        //  console.log("这是第" + index + "个" + x + "行" + y);
+        // console.log(CPBAPI.ImgRectMap)
     }
 }
 

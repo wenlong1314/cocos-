@@ -1,6 +1,4 @@
 <?php
-
-
 $key = array(
 	"XWAluhvB2Jjljxn1jKgQUFieIPpMCaOO", //2号机
 	"mC9JC8GKdPyyncZPL8mCP1UjdUiWGGf9", //3号机
@@ -29,22 +27,27 @@ $url = 'https://api.tinify.com/shrink';
 
 $huawei_res = json_decode(httpPost($url, $data, $key[rand(0, count($key) - 1)])); //返回json
 if ($huawei_res->output) {
-	var_dump($huawei_res);
-	echo "<br />";
+//	var_dump($huawei_res);
+//	echo "<br />";
 	//	echo $huawei_res['output']['url'];这样读取失败
 	// 拿值，crc32，命名，存储,返回值
 	$imgdata = file_get_contents($huawei_res->output->url);
 	$imgName = crc32($imgdata);
-	echo $imgName;
-	echo "<br />";
+	//echo $imgName;
+	//echo "<br />";
 	$imgName2 = substr((string) (100000000 + $huawei_res->output->size), 1)
 		. substr(strtoupper((string) (0x100000000 + $imgName)), 1)
 		. "." . substr($huawei_res->output->type, 6);
-
-	file_put_contents("https://tiny.qimiaosenlin.com/cdn/cpb/" . $imgName2 . ".png", $imgName);
-	echo $imgName2;
+	file_put_contents("../cdn/cpb/" . $imgName2 , $imgdata);
+//	echo "{\"success\":true}";
+	echo "{\"success\":true,\"name\":".$imgName2.
+		",\"size1\":".$huawei_res->input->size.
+		",\"size2\":".$huawei_res->output->size.
+		",\"tinyurl\":".$huawei_res->output->url.
+		",\"url\":\"../cdn/cpb/" . $imgName2."}";
 } else {
-	echo $huawei_res;
+	//echo $huawei_res;
+	echo "{\"fail\":fail}";
 }
 
 function httpPost($url, $data, $key)

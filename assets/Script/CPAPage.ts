@@ -124,7 +124,6 @@ export default class CPAPage extends cc.Component {
                 return;
             }
         }
-
         this.decodeData();
     }
     public decodeData(): void {

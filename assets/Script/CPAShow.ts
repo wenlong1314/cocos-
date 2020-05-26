@@ -17,14 +17,15 @@ export default class CPAShow extends cc.Component {
     public init(arrs: Array<CpaData>, cpaPage: CPAPage, flag?: boolean): void {
         console.log("init CPAShow");
         this.cpaPage = cpaPage;
+        let that = this;
         this.view = this.node.getChildByName("view");
         this.content = this.view.getChildByName("content");
-        this.cpbAPI=new CPBAPI();
+        this.cpbAPI = new CPBAPI();
         this.content.removeAllChildren();
         this.content.height = (arrs.length - 1) * 160;
-
         this.initInputHTML();
         console.log(arrs);
+       
         for (let index in arrs) {
             let item: cc.Node = prefabs.instantiate("CPAItem");
             // console.log(item);
@@ -41,7 +42,6 @@ export default class CPAShow extends cc.Component {
                 console.log("新增的数据")
                 //this.base64ShowImg(arrs[index].urlBase64, arrs[index].imgUrl, img);
             } else if (arrs[index].imgUrl) {
-                let that = this;
                 // console.log("动态加载图片的方法")
                 var url = "https://cdn-tiny.qimiaosenlin.com/cdn/cpa/" + arrs[index].imgUrl;//图片路径
                 // cc.loader
@@ -56,6 +56,7 @@ export default class CPAShow extends cc.Component {
             } else {
                 //  alert(index + "无图片数据");
             }
+            
 
             input1.string = arrs[index].name || "";
             input2.string = arrs[index].appId || "";
@@ -163,15 +164,7 @@ export default class CPAShow extends cc.Component {
         });
         texture.handleLoadedTexture();
     }
-    public _arrayBufferToBase64(buffer) {
-        var binary = '';
-        var bytes = new Uint8Array(buffer);
-        var len = bytes.byteLength;
-        for (var i = 0; i < len; i++) {
-            binary += String.fromCharCode(bytes[i]);
-        }
-        return window.btoa(binary);
-    }
+
     public initInputHTML(): void {
         let that = this;
         if (document.getElementById("fileInput")) {
@@ -195,6 +188,6 @@ export default class CPAShow extends cc.Component {
             })
         }
     }
-  
+
 }
 
