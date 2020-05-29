@@ -22,7 +22,8 @@ export default class CPAPage extends cc.Component {
     public imgDatas: Array<Array<string>> = [];
     public reqCpaData: any;
     public cpbNames: Array<string>;
- 
+    public cpa1flag: boolean;
+    public cpa2flag: boolean;
 
     public init(): void {
         console.log("init CPAPage");
@@ -32,10 +33,12 @@ export default class CPAPage extends cc.Component {
         this.time = this.node.getChildByName("time");
         this.cpaShow = this.node.getChildByName("cpaShow").getComponent(CPAShow);
         this.cpbAPI = new CPBAPI();
-
         this.time.getComponent(cc.Label).string = "刷新于：" + new Date().toLocaleString();
-        this.btn.on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
 
+
+
+
+        this.btn.on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
             console.log(this.cpaArray);
             let item: CpaData = {};
             this.cpaArray.push(item);
@@ -62,6 +65,7 @@ export default class CPAPage extends cc.Component {
                 this.myDecodeJSON(rsp);
                 this.reqCpaData = rsp;
                 console.log(this.reqCpaData);
+
                 this.cpaShow.init(this.cpaArray, this.cpaPage);
             });
         });
@@ -70,6 +74,20 @@ export default class CPAPage extends cc.Component {
     public myDecodeJSON(rsp): void {
         //todo  创建一个数组，数组中保存cpa列表的所有属性
         this.cpaArray = [];
+        console.dir(this.node)
+        let cpa1 = this.node.getChildByName("cpa1").getComponent(cc.Toggle);
+        let cpa2 = this.node.getChildByName("cpa2").getComponent(cc.Toggle);
+        this.cpa1flag = rsp.CPA关;
+        this.cpa2flag = rsp.加载页显示CPA;
+        this.cpa1flag && cpa1.uncheck();
+        !this.cpa2flag && cpa2.uncheck();
+        cpa1.node.on('toggle', () => {
+            this.cpa1flag = !this.cpa1flag;
+        }, this);
+        cpa2.node.on('toggle', () => {
+            this.cpa2flag = !this.cpa2flag;
+        }, this);
+
         let array = rsp.data.addturnlist;
         for (let item in array) {
             let cpaData: CpaData = {};
@@ -128,17 +146,14 @@ export default class CPAPage extends cc.Component {
     }
     public decodeData(): void {
         //2 整理上传数据
-
-        // console.log("填写完毕开始塞入数据");
-        // console.log("原数据")
-        // console.log(JSON.stringify(this.reqCpaData))
-        // console.log(this.imgDatas)
-
         let currdata = {};
-        let gameIcon1Array = [];
-        let gameIcon2Array = [];
-        let hutuiqiangArray = [];
+
+        main.gameIcon1Array = [];
+        main.gameIcon2Array = [];
+        main.hutuiqiangArray = [];
+        main.iosArray = [];
         let iosArray = [];
+
         this.cpbNames = [];
         this.reqCpaData.data["addturnlist"] = {};
         for (let item in this.cpaArray) {
@@ -156,34 +171,37 @@ export default class CPAPage extends cc.Component {
             currdata[item]["otherName"] = curr.name;
             this.cpbNames.push(curr.name);
             if (curr.cpa1) {
-                gameIcon1Array.push(item);
+                main.gameIcon1Array.push(item);
             }
             if (curr.cpa2) {
-                gameIcon2Array.push(item);
+                main.gameIcon2Array.push(item);
             }
             if (curr.hutuiqiang) {
-                hutuiqiangArray.push(item);
+                main.hutuiqiangArray.push(item);
             }
             if (!curr.IOS) {
                 iosArray.push(curr.appId);
+                main.iosArray.push(item);
             }
         }
-        console.log(currdata);
         this.reqCpaData.data["addturnlist"] = currdata;
-        if (gameIcon1Array.length > 0) {
-            this.reqCpaData.data["gameIcon1"]["itemlist"] = gameIcon1Array;
+        if (main.gameIcon1Array.length > 0) {
+            this.reqCpaData.data["gameIcon1"]["itemlist"] = main.gameIcon1Array;
         }
-        if (gameIcon2Array.length > 0) {
-            this.reqCpaData.data["gameIcon2"]["itemlist"] = gameIcon2Array;
+        if (main.gameIcon2Array.length > 0) {
+            this.reqCpaData.data["gameIcon2"]["itemlist"] = main.gameIcon2Array;
         }
-        if (hutuiqiangArray.length > 0) {
-            this.reqCpaData.data["hutuiqiang"]["itemlist"] = hutuiqiangArray;
+        if (main.hutuiqiangArray.length > 0) {
+            this.reqCpaData.data["hutuiqiang"]["itemlist"] = main.hutuiqiangArray;
         }
         if (iosArray.length > 0) {
             this.reqCpaData["苹果不显示"] = iosArray;
         }
+        this.reqCpaData["加载页显示CPA"] = this.cpa2flag;
+        this.reqCpaData["CPA关"] = this.cpa1flag;
+        this.reqCpaData["CPA黑名单"] = main.blackArray;
         console.log("待上传数据")
-        console.log(this.cpaArray)
+        console.log(this.reqCpaData)
         this.submitCPB();
         this.submitCPA()
     }
@@ -199,18 +217,18 @@ export default class CPAPage extends cc.Component {
         }, (res) => {
             console.log(res)
             if (res.success) {
-                alert("成功");
+                //alert("成功");
+                console.log("cpa提交成功");
             } else {
-                alert("失败");
+                alert("cpa提交失败");
             }
         });
     }
     public submitCPB(): void {
-        console.log(this.cpbNames);
-        this.cpbAPI.cpbSubmit(this.cpbNames);
+        this.cpbAPI.cpbSubmit(this.cpaArray, this.cpbNames, this.cpaName.replace("a", "b"));
         //   this.drewImg(this.cpbNames);
     }
-    
+
 
 
 }

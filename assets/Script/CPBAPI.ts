@@ -1,4 +1,5 @@
 import { _cdn2, get, gameRoot } from "./global";
+import { main } from "./Main";
 
 
 const { ccclass, property } = cc._decorator;
@@ -9,36 +10,33 @@ export default class CPBAPI {
     public NameRectMap: Map<string, Array<number>> = new Map();
     public static ImgRectMap: Map<number, Array<number>> = new Map();//new Map([[1,[2]]])
     public reqAllData: any;
+    public reqCPBData: any;
+    public crc32name: string;
+    public cpbName: string;
 
-    public cpbSubmit(arrs: Array<string>, callback?: any) {
-        let that = this;
-
-        console.log(CPBAPI.ImgRectMap);
-        console.log(this.NameRectMap);
-
+    public cpbSubmit(reqCpaData: any, nameArrs: Array<string>, cpbName: string, callback?: any) {
+        this.cpbName = cpbName;
         this.loadBottom("89b68afc-e961-480b-8fca-d5a82cef726e").then(
             (Texture2D: any) => {
-                console.log(Texture2D["_image"]);
-                that.drewImg(Texture2D["_image"], -2, Texture2D.width, Texture2D.height);
-                this.drewTxt(arrs);
+                //  console.log(Texture2D["_image"]);
+                this.drewImg(Texture2D["_image"], -2, Texture2D.width, Texture2D.height);
+                this.drewTxt(nameArrs);
+                console.log(CPBAPI.ImgRectMap);
+                console.log(this.NameRectMap);
             }, (err) => console.log(err)
         ).then(
             () => {
                 console.log("提交cpb图集开始")
-                let promise1 = this.postTinyImg(this.reqAllData).then(
-                    () => console.log("提交cpb图集成功"),
-                    () => alert("提交cpb图集失败")
-                )
-                let promise2 = this.postCPBCode(this.reqAllData).then(
-                    () => console.log("提交cpb数据成功"),
-                    () => alert("提交cpb数据失败")
-                )
-                Promise.all([promise1, promise2]).then((num) => {
-                    console.log("提交cpb成功");
-                }).catch(() => alert("提交cpb失败"))
+                return this.postTinyImg(this.reqAllData)
             }
+        ).then(
+            (data: any) => {
+                let code = JSON.parse(data)
+                this.crc32name = code["name"];
+                return this.postCPBCode(reqCpaData)
+            },
+            () => alert("提交cpb图集失败")
         )
-
     }
 
     // 字是提交时填充大图
@@ -62,7 +60,7 @@ export default class CPBAPI {
         //  this.NamebottomRectMap(tmpImg, 0, 0, width, height, x * 150, y * 150, width, height)
 
         let reqData = drewCanvas.toDataURL().replace(/data:image\/.{0,9};base64,/i, "");
-        console.log("替换后：");
+        //  console.log("替换后：");
         this.reqAllData = { "cpbAtlas": reqData, "cpbAtlasName": "cpbTmp" }
 
     }
@@ -90,22 +88,56 @@ export default class CPBAPI {
             });
         })
     }
-    public decodeCPBData(data): void {
+    public decodeCPBData(arrs): void {
+        // todo. 1 数据字段对应含义，2塞参数
+        this.reqCPBData = {};
+        let cpbs = [];
+        for (let curr in arrs) {
+            let tmp = {};
+            let item = arrs[curr];
+            tmp["appId"] = item.appId;
+            tmp["name"] = item.name;
+            tmp["nameRect"] = this.NameRectMap.get(item.name);
+            tmp["path"] = item.path;
+            tmp["iconRect"] = CPBAPI.ImgRectMap.get(Number(curr));
+            cpbs.push(tmp);
+        }
+        this.reqCPBData["开"] = true;
+        this.reqCPBData["加载页显示"] = true;
+        this.reqCPBData["黑名单"] = main.blackArray;
+        this.reqCPBData["atlas"] = this.crc32name;
+        this.reqCPBData["文字底"] = CPBAPI.ImgRectMap.get(-2);
+        this.reqCPBData["cpbs"] = cpbs;
 
-
+        if (main.gameIcon1Array.length > 0) {
+            this.reqCPBData["推荐1"] = main.gameIcon1Array;
+        }
+        if (main.gameIcon2Array.length > 0) {
+            this.reqCPBData["推荐2"] = main.gameIcon2Array;
+        }
+        if (main.hutuiqiangArray.length > 0) {
+            this.reqCPBData["hutuiqiang"] = main.hutuiqiangArray;
+        }
+        if (main.iosArray.length > 0) {
+            this.reqCPBData["苹果不显示"] = main.iosArray;
+        }
+        console.log("cpb 数据");
+        console.log(this.reqCPBData);
     }
-    public postCPBCode(data): Promise<void> {
+    public postCPBCode(arrs): Promise<void> {
+        this.decodeCPBData(arrs);
+        let data = { "game": main.chooseGameID, "cpb": JSON.stringify(this.reqCPBData), "cpbName": this.cpbName };
         //1 准备数据，2上传，3调用
         return new Promise((rs, rj) => {
-            // $.post(gameRoot + "cpbcode.php", data, rsp => {
-            //     if (rsp) {
-            //         rs(rsp);
-            //     } else {
-            //         if (rj) {
-            //             rj(rsp);
-            //         }
-            //     }
-            // });
+            $.post(gameRoot + "setCPBdata.php", data, rsp => {
+                if (rsp) {
+                    rs(rsp);
+                } else {
+                    if (rj) {
+                        rj(rsp);
+                    }
+                }
+            });
         })
     }
 
@@ -125,7 +157,6 @@ export default class CPBAPI {
     public drewImg(tmpImg: HTMLImageElement, index: number, width: number, height: number, fix?: boolean): void {
         let drewCanvas = this.getDrewCanvas();
         const ctx = drewCanvas.getContext("2d");
-        console.log(1);
         let x = Math.floor(index / 6);
         let y = index % 6;
         fix && ctx.clearRect(x * 150, y * 150, 150, 150);
@@ -136,7 +167,8 @@ export default class CPBAPI {
         }
         CPBAPI.ImgRectMap.set(index, [970, 970, width, height]);
         let drewUrlBase64 = drewCanvas.toDataURL();
-        (fix || index < -1) && console.log(drewUrlBase64);
+        //(fix || index < -1) && console.log(drewUrlBase64);
+
         //  console.log("这是第" + index + "个" + x + "行" + y);
         // console.log(CPBAPI.ImgRectMap)
     }

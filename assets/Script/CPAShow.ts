@@ -25,7 +25,9 @@ export default class CPAShow extends cc.Component {
         this.content.height = (arrs.length - 1) * 160;
         this.initInputHTML();
         console.log(arrs);
+
        
+
         for (let index in arrs) {
             let item: cc.Node = prefabs.instantiate("CPAItem");
             // console.log(item);
@@ -46,6 +48,7 @@ export default class CPAShow extends cc.Component {
                 var url = "https://cdn-tiny.qimiaosenlin.com/cdn/cpa/" + arrs[index].imgUrl;//图片路径
                 // cc.loader
                 //动态加载图片的方法
+               
                 cc.loader.load(url, function (err, Texture2D) {
                     //  console.log(err)
                     img.spriteFrame = new cc.SpriteFrame(Texture2D);
@@ -56,7 +59,7 @@ export default class CPAShow extends cc.Component {
             } else {
                 //  alert(index + "无图片数据");
             }
-            
+
 
             input1.string = arrs[index].name || "";
             input2.string = arrs[index].appId || "";

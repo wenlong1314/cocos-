@@ -45,12 +45,17 @@ export default class ConfigPage extends cc.Component {
 
         this.updata();
 
-
         this.submit.children[0].on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
             //console.log(main.settings);
             main.settings.系统配置版本 = main.getTime();
             console.log(main.settings);
             post({ op: "setSettings", game: main.chooseGameID, code: JSON.stringify(main.settings) }, rsp => {
+
+                let nums = this.input3.string.replace(/[^\d,,，。.;\n\t-]/g, "").split(/[,，。.;\n\t]/).filter((value) => {
+                    if (value) { return value }
+                })
+                main.blackArray = nums;
+                console.log("黑名单数据：" + main.blackArray)
                 alert("修改配置文件成功！");
             });
         });
@@ -111,5 +116,10 @@ export default class ConfigPage extends cc.Component {
                 this.changeNode(node);
             });
         }
+        let nums = this.input3.string.replace(/[^\d,,，。.;\n\t-]/g, "").split(/[,，。.;\n\t]/).filter((value) => {
+            if (value) { return value }
+        })
+        main.blackArray = nums;
+        console.log("黑名单数据：" + main.blackArray)
     }
 }

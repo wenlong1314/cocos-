@@ -29,6 +29,14 @@ export default class Main extends cc.Component {
     public gamesNameShow: Array<any>;
     public gameNames: Map<string, string>;
     public gameNames2: { [key: string]: string } = { "天天炸飞机": "plane" };
+    public blackArray: Array<string> = ["1"];
+
+    public gameIcon1Array: Array<string>;
+    public gameIcon2Array: Array<string>;
+    public hutuiqiangArray: Array<string>;
+    public iosArray: Array<string>;
+
+
     private settingFlag: boolean = false;
     private prefabsFlag: boolean = false;
     protected async onLoad(): Promise<void> {
@@ -118,12 +126,12 @@ export default class Main extends cc.Component {
         for (let index in this.pages) {
             this[this.pages[index]].init();
         }
-        this.tab(0);        
+        this.tab(0);
     }
     public prefabsLoad(): Promise<string> {
         return new Promise((rs, rj) => {
             prefabs.init(() => { rs(); });
-           
+
         })
     }
 

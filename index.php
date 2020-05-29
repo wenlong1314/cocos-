@@ -12,7 +12,7 @@
 //	$sys->isWX=false;
 	$testing=true;
 	
-	$webPath="https://cdn-tiny.qimiaosenlin.com/cdn/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe718m5d5b72490319047/web/";
+	$webPath="https://tiny.qimiaosenlin.com/cdn/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe718m5d5b72490319047/w"."eb/";
 	//$webPath="https://cdn-tiny.qimiaosenlin.com/cdn/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe718m5d5b72490319047/web/";
 	$wxImgUrl=$webPath."resource/00007160F1D2E72B.jpg";
 	
