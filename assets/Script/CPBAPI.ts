@@ -62,6 +62,7 @@ export default class CPBAPI {
             if (!this.NameRectMap.has(arrs[index])) {
                 let y = parseInt(index) * 30;
                 ctx.fillText(arrs[index], 755, y + 19);
+                 
                 let txt = ctx.measureText(arrs[index]);
                 this.NameRectMap.set(arrs[index], [755, y, Math.round(txt.width), Math.round(txt.actualBoundingBoxAscent + txt.actualBoundingBoxDescent)]);
             }
