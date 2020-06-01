@@ -171,17 +171,17 @@ export default class CPAPage extends cc.Component {
             currdata[item]["otherName"] = curr.name;
             this.cpbNames.push(curr.name);
             if (curr.cpa1) {
-                main.gameIcon1Array.push(item);
+                main.gameIcon1Array.push("" + (Number(item) - 1));
             }
             if (curr.cpa2) {
-                main.gameIcon2Array.push(item);
+                main.gameIcon2Array.push("" + (Number(item) - 1));
             }
             if (curr.hutuiqiang) {
-                main.hutuiqiangArray.push(item);
+                main.hutuiqiangArray.push("" + (Number(item) - 1));
             }
             if (!curr.IOS) {
                 iosArray.push(curr.appId);
-                main.iosArray.push(item);
+                main.iosArray.push("" + (Number(item) - 1));
             }
         }
         this.reqCpaData.data["addturnlist"] = currdata;

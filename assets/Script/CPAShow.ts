@@ -54,7 +54,7 @@ export default class CPAShow extends cc.Component {
                     img.spriteFrame = new cc.SpriteFrame(Texture2D);
                     // console.log("Texture2D");
                     //  console.log(Texture2D["_image"]);
-                    that.cpbAPI.drewImg(Texture2D["_image"], parseInt(index) - 1, Texture2D.width, Texture2D.height);
+                    that.cpbAPI.drewImg(Texture2D["_image"], parseInt(index), Texture2D.width, Texture2D.height);
                 });
             } else {
                 //  alert(index + "无图片数据");
@@ -157,7 +157,7 @@ export default class CPAShow extends cc.Component {
                     item.spriteFrame = new cc.SpriteFrame(texture);
                 } else {
                     that.currImg.spriteFrame = new cc.SpriteFrame(texture);
-                    let index = that.currImg.node.parent.getSiblingIndex();
+                    let index = that.currImg.node.parent.getSiblingIndex()+1;
                     that.cpbAPI.drewImg(img, index, texture.width, texture.height, true);
                 }
             } else {

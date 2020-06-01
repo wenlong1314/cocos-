@@ -36,8 +36,9 @@ if ($huawei_res->output) {
 	//echo $imgName;
 	//echo "<br />";
 	$imgName2 = substr((string) (100000000 + $huawei_res->output->size), 1)
-		. substr(strtoupper((string) (0x100000000 + $imgName)), 1)
+		. substr(strtoupper((string) dechex(0x100000000 + $imgName)), 1)
 		. "." . substr($huawei_res->output->type, 6);
+	// echo	dechex(0x100000000 + $imgName);
 	file_put_contents("../cdn/cpb/" . $imgName2, $imgdata);
 	//	echo "{\"success\":true}";
 	// echo "{\"success\":true,\"name\":" . $imgName2 .

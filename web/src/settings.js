@@ -11,52 +11,61 @@ window._CCSettings = {
 	"rawAssets": {
 		"assets": {
 			"3": [
+				"ui/cpb文字底.png",
+				4
+			],
+			"4": [
 				"prefabs/ShareItem.prefab",
 				2
 			],
-			"11": [
+			"6": [
+				"ui/cpb文字底",
+				3,
+				1
+			],
+			"13": [
 				"prefabs/ChooseBoxItem.prefab",
 				2
 			],
-			"14": [
+			"16": [
 				"prefabs/ScrollViewItem.prefab",
 				2
 			],
-			"15": [
+			"17": [
 				"prefabs/CPAItem.prefab",
 				2
 			]
 		},
 		"internal": {
-			"5": [
+			"7": [
 				"materials/builtin-unlit.mtl",
 				1
 			],
-			"6": [
+			"8": [
 				"effects/builtin-unlit.effect",
 				0
 			],
-			"7": [
+			"9": [
 				"effects/builtin-2d-gray-sprite.effect",
 				0
 			],
-			"8": [
+			"10": [
 				"materials/builtin-2d-gray-sprite.mtl",
 				1
 			],
-			"9": [
+			"11": [
 				"effects/builtin-3d-trail.effect",
 				0
 			],
-			"10": [
+			"12": [
 				"materials/builtin-3d-trail.mtl",
 				1
 			],
-			"12": [
+			"14": [
 				"effects/builtin-clear-stencil.effect",
 				0
 			],
-			"13": [
+			"15": [
 				"materials/builtin-clear-stencil.mtl",
 				1
 			],
@@ -77,7 +86,9 @@ window._CCSettings = {
 	"assetTypes": [
 		"cc.EffectAsset",
 		"cc.Material",
-		"cc.Prefab"
+		"cc.Prefab",
+		"cc.SpriteFrame",
+		"cc.Texture2D"
 	],
 	"jsList": [
 		"assets/Script/3/jquery-1.11.2.min.js"
@@ -86,66 +97,67 @@ window._CCSettings = {
 	"scenes": [
 		{
 			"url": "db://assets/Scene/Main.fire",
-			"uuid": 4
+			"uuid": 5
 		}
 	],
 	"packedAssets": {
-		"02121952a": [
+		"0239970e4": [
 			"02delMVqdBD70a/HSD99FK",
-			"170bee10a",
+			"14ab1abec",
 			"73oJA92A5OPKpn+ZlUPAj1",
+			3,
 			"d2kHe6FidKcpV5e1aiNTQM",
 			"ed0hW5J5ZKBar1gflskoHO"
 		],
 		"03a1f1fa4": [
 			2,
 			0,
-			3,
+			4,
 			1
 		],
 		"072c8b2d7": [
 			"13a1pDj8tOL5ae5aAKADK4",
 			"2bNebGBi1DbZJWAhpl000h",
-			4,
-			16,
+			5,
+			18,
 			2,
-			17,
+			19,
 			"97/b2zM5VG4rBTWlZMP9f5",
 			0,
 			"c5dpiJ/aFL7bd/o1FxITba",
-			"ecZ+MkzClH5YQS5qItVlch",
+			6,
 			1
 		],
 		"079499991": [
-			5,
-			6
-		],
-		"07ce7530a": [
 			7,
 			8
 		],
-		"0a5cba09d": [
+		"07ce7530a": [
 			9,
 			10
 		],
+		"0a5cba09d": [
+			11,
+			12
+		],
 		"0bb412e07": [
 			0,
-			11
+			13
 		],
 		"0d669730c": [
-			12,
-			13
+			14,
+			15
 		],
 		"0df8009d2": [
 			0,
-			14,
+			16,
 			1
 		],
 		"0e26c3e42": [
-			15,
-			16,
-			2,
 			17,
+			18,
+			2,
+			19,
 			0,
 			1
 		]
@@ -158,8 +170,10 @@ window._CCSettings = {
 		"afztA/u5tDN4SuvFeIq21b",
 		"ffDpHHVcZAhqOfy25Fe4w7",
 		"773SpuZr1ArrrSlzzKmREw",
+		"89tor86WFIC4/K1ags73Ju",
 		"b4iTx1ESxJEKS0Kugrybtg",
 		"2dL3kvpAxJu6GJ7RdqJG5J",
+		"ecZ+MkzClH5YQS5qItVlch",
 		"2aKWBXJHxKHLvrBUi2yYZQ",
 		"6dkeWRTOBGXICfYQ7JUBnG",
 		"14TDKXr2NJ6LjvHPops74o",

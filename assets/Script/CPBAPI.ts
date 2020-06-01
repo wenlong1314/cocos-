@@ -17,8 +17,9 @@ export default class CPBAPI {
     public cpbSubmit(reqCpaData: any, nameArrs: Array<string>, cpbName: string, callback?: any) {
         this.cpbName = cpbName;
         this.loadBottom("89b68afc-e961-480b-8fca-d5a82cef726e").then(
-            (Texture2D: any) => {
+            (SpriteFrame: any) => {
                 //  console.log(Texture2D["_image"]);
+                let Texture2D = SpriteFrame["_texture"];
                 this.drewImg(Texture2D["_image"], -2, Texture2D.width, Texture2D.height);
                 this.drewTxt(nameArrs);
                 console.log(CPBAPI.ImgRectMap);
@@ -26,31 +27,41 @@ export default class CPBAPI {
             }, (err) => console.log(err)
         ).then(
             () => {
-                console.log("提交cpb图集开始")
-                return this.postTinyImg(this.reqAllData)
+                console.log("提交cpb图集开始");
+                return this.postTinyImg(this.reqAllData);
             }
         ).then(
             (data: any) => {
-                let code = JSON.parse(data)
+                let code = JSON.parse(data);
                 this.crc32name = code["name"];
-                return this.postCPBCode(reqCpaData)
+                return this.postCPBCode(reqCpaData);
             },
             () => alert("提交cpb图集失败")
+        ).then(
+            (data: any) => {
+                if (data.success) {
+                    alert("提交cpb数据成功");
+                } else {
+                    alert("提交cpb数据失败");
+                }
+            },
+            () => alert("提交cpb数据失败")
         )
+
     }
 
     // 字是提交时填充大图
     public drewTxt(arrs: Array<string>): void {
         let drewCanvas = this.getDrewCanvas();
         const ctx = drewCanvas.getContext("2d");
-        ctx.font = "24px 微软雅黑";
-        ctx.fillStyle = "#4774CB";
+        ctx.font = "20px 微软雅黑";
+        ctx.fillStyle = "#ffffff";
         //去重
         this.NameRectMap = new Map();
         for (let index in arrs) {
             if (!this.NameRectMap.has(arrs[index])) {
                 let y = parseInt(index) * 30;
-                ctx.fillText(arrs[index], 755, y + 26);
+                ctx.fillText(arrs[index], 755, y + 19);
                 let txt = ctx.measureText(arrs[index]);
                 this.NameRectMap.set(arrs[index], [755, y, Math.round(txt.width), Math.round(txt.actualBoundingBoxAscent + txt.actualBoundingBoxDescent)]);
             }
@@ -64,13 +75,28 @@ export default class CPBAPI {
         this.reqAllData = { "cpbAtlas": reqData, "cpbAtlasName": "cpbTmp" }
 
     }
-    public loadBottom(uuid: string): Promise<void> {
+    public loadBottom2(uuid: string): Promise<void> {
         //文字底
         return new Promise((rs, rj) => {
             cc.loader.load({
                 uuid: uuid, type: 'uuid'
             }, function (err, Texture2D) {
                 err ? rj(err) : rs(Texture2D);
+            })
+        })
+    }
+    public loadBottom(uuid: string): Promise<void> {
+        //文字底
+        return new Promise((rs, rj) => {
+            cc.loader.loadRes('ui/cpb文字底', cc.SpriteFrame, function (err, SpriteFrame) {
+                //  err ? rj(err) : rs(Texture2D);
+                if (err) {
+                    cc.error(err.message || err);
+                    return;
+                } else {
+                    console.log("11111");
+                    rs(SpriteFrame);
+                }
             })
         })
     }
@@ -92,6 +118,8 @@ export default class CPBAPI {
         // todo. 1 数据字段对应含义，2塞参数
         this.reqCPBData = {};
         let cpbs = [];
+        console.log("iconRect")
+        console.log(CPBAPI.ImgRectMap)
         for (let curr in arrs) {
             let tmp = {};
             let item = arrs[curr];
@@ -154,18 +182,20 @@ export default class CPBAPI {
         return document.getElementById("drewCanvas") as HTMLCanvasElement;
     }
     // 图是获取时，填充大图，修改后自动修改大图。
-    public drewImg(tmpImg: HTMLImageElement, index: number, width: number, height: number, fix?: boolean): void {
+    public drewImg(tmpImg: HTMLImageElement, curr: number, width: number, height: number, fix?: boolean): void {
         let drewCanvas = this.getDrewCanvas();
         const ctx = drewCanvas.getContext("2d");
-        let x = Math.floor(index / 6);
-        let y = index % 6;
+        let x = Math.floor((curr - 1) / 6);
+        let y = (curr - 1) % 6;
         fix && ctx.clearRect(x * 150, y * 150, 150, 150);
-        if (index < -1) {
+        if (curr < -1) {
             ctx.drawImage(tmpImg, 0, 0, width, height, 970, 970, width, height);// 文字底，固定
+            CPBAPI.ImgRectMap.set(curr, [970, 970, width, height]);
         } else {
             ctx.drawImage(tmpImg, 0, 0, width, height, x * 150, y * 150, width, height)
+            CPBAPI.ImgRectMap.set(curr, [x * 150, y * 150, width, height]);
         }
-        CPBAPI.ImgRectMap.set(index, [970, 970, width, height]);
+
         let drewUrlBase64 = drewCanvas.toDataURL();
         //(fix || index < -1) && console.log(drewUrlBase64);
 
