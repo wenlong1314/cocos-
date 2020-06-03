@@ -18,8 +18,11 @@ if (strstr($_REQUEST["cpbAtlas"], 'http')) {
 	//图片放到"https://tiny.qimiaosenlin.com/cdn/cpb/00083160BA5946B6.png
 	$output_file = "../cdn/cpb/" . $_REQUEST["cpbAtlasName"] . ".png";
 	file_put_contents($output_file, base64_decode($_REQUEST["cpbAtlas"]));
-	$output_fileUrl = "https://tiny.qimiaosenlin.com/cdn/cpb/" . $_REQUEST["cpbAtlasName"] . ".png";
-	//$output_fileUrl = "https://tinypng.com/images/panda-happy.png";
+	if ($_REQUEST["cpbAtlasName"] != "你瞅啥") {
+		$output_fileUrl = "https://tiny.qimiaosenlin.com/cdn/cpb/cpbTmp.png"; //$output_fileUrl = "https://tinypng.com/images/panda-happy.png";
+	} else {
+		$output_fileUrl = "https://hcrncsdl.leiting.com/cdn/cpb/cpbTmp.png";
+	}
 	$data['source'] = ['url' => $output_fileUrl];
 	//print_r($output_fileUrl);
 }
@@ -40,12 +43,6 @@ if ($huawei_res->output) {
 		. "." . substr($huawei_res->output->type, 6);
 	// echo	dechex(0x100000000 + $imgName);
 	file_put_contents("../cdn/cpb/" . $imgName2, $imgdata);
-	//	echo "{\"success\":true}";
-	// echo "{\"success\":true,\"name\":" . $imgName2 .
-	// 	",\"size1\":" . $huawei_res->input->size .
-	// 	",\"size2\":" . $huawei_res->output->size .
-	// 	",\"tinyurl\":" . $huawei_res->output->url .
-	// 	",\"url\":\"../cdn/cpb/" . $imgName2 . "}";
 	$arr = array();
 	$arr["success"] = true;
 	$arr["name"] =  $imgName2;

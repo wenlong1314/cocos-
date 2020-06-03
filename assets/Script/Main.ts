@@ -61,7 +61,8 @@ export default class Main extends cc.Component {
 
         console.log(`company=${company}`);
         //  console.log(`company=${window["company"]}`);
-
+        // const hosts: Array<string> = ["http://111.231.82.117/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe7185d5b2490319047/", "http://212.129.154.127/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe7185d5b2490319047/"];
+        //const hosts: Array<string> = ["https://tiny.qimiaosenlin.com/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe7185d5b2490319047/"];
         switch (company) {
             case "梦嘉":
                 this.chooseGameName = "火柴人冲突";
@@ -71,10 +72,10 @@ export default class Main extends cc.Component {
                 ]);
                 break;
             case "雷霆":
-                this.chooseGameName = "火柴人你瞅啥";
-                this.gamesNameShow = ["火柴人你瞅啥", "我特能耍剑", "丧尸干仗"];
+                this.chooseGameName = "我特能耍剑";
+                this.gamesNameShow = ["我特能耍剑", "丧尸干仗"];
                 this.gameNames = new Map<string, string>([
-                    ["火柴人你瞅啥", "sword2"], ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"]]);
+                    ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"]]);
                 break;
             case "奇妙":
                 this.chooseGameName = "主公贼有钱";

@@ -1,4 +1,4 @@
-import { _cdn2, get, gameRoot } from "./global";
+import { _cdn2, get, gameRoot, hostsArray, gameName } from "./global";
 import { main } from "./Main";
 
 
@@ -34,7 +34,13 @@ export default class CPBAPI {
             (data: any) => {
                 let code = JSON.parse(data);
                 this.crc32name = code["name"];
-                return this.postCPBCode(reqCpaData);
+                // 兼容雷霆，奇妙
+                let promiseArray: Array<Promise<void>> = [];
+                for (let host of hostsArray) {
+                    let gameRoot = host + gameName + "/";
+                    promiseArray.push(this.postCPBCode(reqCpaData, gameRoot));
+                }
+                return Promise.all(promiseArray);
             },
             () => alert("提交cpb图集失败")
         ).then(
@@ -62,7 +68,7 @@ export default class CPBAPI {
             if (!this.NameRectMap.has(arrs[index])) {
                 let y = parseInt(index) * 30;
                 ctx.fillText(arrs[index], 755, y + 19);
-                 
+
                 let txt = ctx.measureText(arrs[index]);
                 this.NameRectMap.set(arrs[index], [755, y, Math.round(txt.width), Math.round(txt.actualBoundingBoxAscent + txt.actualBoundingBoxDescent)]);
             }
@@ -73,7 +79,12 @@ export default class CPBAPI {
 
         let reqData = drewCanvas.toDataURL().replace(/data:image\/.{0,9};base64,/i, "");
         //  console.log("替换后：");
-        this.reqAllData = { "cpbAtlas": reqData, "cpbAtlasName": "cpbTmp" }
+        if (main.chooseGameName == "火柴人你瞅啥") {
+            this.reqAllData = { "cpbAtlas": reqData, "cpbAtlasName": "你瞅啥" }
+        } else {
+            this.reqAllData = { "cpbAtlas": reqData, "cpbAtlasName": "其他" }
+        }
+
 
     }
     public loadBottom2(uuid: string): Promise<void> {
@@ -153,11 +164,13 @@ export default class CPBAPI {
         console.log("cpb 数据");
         console.log(this.reqCPBData);
     }
-    public postCPBCode(arrs): Promise<void> {
+    public postCPBCode(arrs, gameRoot): Promise<void> {
         this.decodeCPBData(arrs);
         let data = { "game": main.chooseGameID, "cpb": JSON.stringify(this.reqCPBData), "cpbName": this.cpbName };
+
         //1 准备数据，2上传，3调用
         return new Promise((rs, rj) => {
+
             $.post(gameRoot + "setCPBdata.php", data, rsp => {
                 if (rsp) {
                     rs(rsp);
@@ -188,7 +201,7 @@ export default class CPBAPI {
         const ctx = drewCanvas.getContext("2d");
         let x = Math.floor((curr - 1) / 6);
         let y = (curr - 1) % 6;
-        fix && ctx.clearRect(x * 150, y * 150, 150, 150);
+        ctx.clearRect(x * 150, y * 150, 150, 150);
         if (curr < -1) {
             ctx.drawImage(tmpImg, 0, 0, width, height, 970, 970, width, height);// 文字底，固定
             CPBAPI.ImgRectMap.set(curr, [970, 970, width, height]);
