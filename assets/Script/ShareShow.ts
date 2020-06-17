@@ -46,6 +46,12 @@ export default class ShareShow extends cc.Component {
             input1.string = arrs[index].query.replace("id=", "") || "";
             input2.string = arrs[index].title || "";
 
+            // input1.node.
+            input1.node.off('editing-did-ended');
+            input2.node.off('editing-did-ended');
+            img.node.off(cc.Node.EventType.TOUCH_START);
+            btn.off(cc.Node.EventType.TOUCH_START);
+
             input1.node.on('editing-did-ended', (evt: { target: cc.Node }) => {
                 input1.string = input1.string.replace(/(^\s*)|(\s*$)/g, "");
                 arrs[index].query = "id=" + input1.string;
@@ -118,7 +124,7 @@ export default class ShareShow extends cc.Component {
         texture.initWithElement(img);
         texture.on("load", function a(e) {
             console.log(e)
-            if (texture.width <= 150 && texture.height <= 150) {
+            if (texture.width <= 600 && texture.height <= 500) {
                 if (item) {
                     item.spriteFrame = new cc.SpriteFrame(texture);
                 } else {
@@ -127,13 +133,13 @@ export default class ShareShow extends cc.Component {
 
                 }
             } else {
-                alert("图片宽高不能超过150*150");
+                alert("图片宽高不能超过600*500");
             }
             texture.off("load", a);
         });
         texture.handleLoadedTexture();
     }
-  
+
     public initInputHTML(): void {
         let that = this;
         if (document.getElementById("fileInput")) {
@@ -152,6 +158,7 @@ export default class ShareShow extends cc.Component {
                     reader.onload = function (e) {
                         console.log("下载成功");
                         that.base64Img(this.result, resultFile);
+                        that.imgInput.value = '';
                     };
 
                 }

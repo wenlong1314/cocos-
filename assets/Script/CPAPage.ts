@@ -14,6 +14,7 @@ export default class CPAPage extends cc.Component {
     public btn: cc.Node;
     private cpaShow: CPAShow;
     public time: cc.Node;
+    public mengceng: cc.Node;
     public cpaPage: CPAPage;
     public cpbAPI: CPBAPI;
     //  public cpaArray: { [key: string]: CpaData };
@@ -32,11 +33,9 @@ export default class CPAPage extends cc.Component {
         this.btn = this.node.getChildByName("btn");
         this.time = this.node.getChildByName("time");
         this.cpaShow = this.node.getChildByName("cpaShow").getComponent(CPAShow);
+
         this.cpbAPI = new CPBAPI();
         this.time.getComponent(cc.Label).string = "刷新于：" + new Date().toLocaleString();
-
-
-
 
         this.btn.on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
             console.log(this.cpaArray);
@@ -49,6 +48,7 @@ export default class CPAPage extends cc.Component {
             //1 判断是否有未填项
             //2 整理上传数据
             //3 上传数据
+            main.hideByMengceng();
             this.showSubmit();
         });
         this.updata()
@@ -96,17 +96,17 @@ export default class CPAPage extends cc.Component {
             cpaData.path = array[item].otherIndexPath;
             cpaData.imgUrl = array[item].otherIconUrl;
 
-            if (rsp.data.gameIcon1 && rsp.data.gameIcon1.itemlist.indexOf(item) > -1) {
+            if (rsp.data.gameIcon1 && (rsp.data.gameIcon1.itemlist.indexOf(Number(item)) > -1 || rsp.data.gameIcon1.itemlist.indexOf(item) > -1)) {
                 cpaData.cpa1 = true;
             } else {
                 cpaData.cpa1 = false;
             }
-            if (rsp.data.gameIcon2 && rsp.data.gameIcon2.itemlist.indexOf(item) > -1) {
+            if (rsp.data.gameIcon2 && rsp.data.gameIcon2.itemlist.indexOf(Number(item)) > -1 || rsp.data.gameIcon1.itemlist.indexOf(item) > -1) {
                 cpaData.cpa2 = true;
             } else {
                 cpaData.cpa2 = false;
             }
-            if (rsp.data.hutuiqiang && rsp.data.hutuiqiang.itemlist.indexOf(item) > -1) {
+            if (rsp.data.hutuiqiang && rsp.data.hutuiqiang.itemlist.indexOf(Number(item)) > -1 || rsp.data.gameIcon1.itemlist.indexOf(item) > -1) {
                 cpaData.hutuiqiang = true;
             } else {
                 cpaData.hutuiqiang = false;
@@ -155,6 +155,7 @@ export default class CPAPage extends cc.Component {
         let iosArray = [];
 
         this.cpbNames = [];
+        let mainIcon = [];
         this.reqCpaData.data["addturnlist"] = {};
         for (let item in this.cpaArray) {
             let curr = this.cpaArray[item];
@@ -171,18 +172,19 @@ export default class CPAPage extends cc.Component {
             currdata[item]["otherName"] = curr.name;
             this.cpbNames.push(curr.name);
             if (curr.cpa1) {
-                main.gameIcon1Array.push("" + (Number(item) - 1));
+                main.gameIcon1Array.push(Number(item));
             }
             if (curr.cpa2) {
-                main.gameIcon2Array.push("" + (Number(item) - 1));
+                main.gameIcon2Array.push(Number(item));
             }
             if (curr.hutuiqiang) {
-                main.hutuiqiangArray.push("" + (Number(item) - 1));
+                main.hutuiqiangArray.push(Number(item));
             }
             if (!curr.IOS) {
                 iosArray.push(curr.appId);
-                main.iosArray.push("" + (Number(item) - 1));
+                main.iosArray.push(Number(item));
             }
+            mainIcon.push(Number(item));
         }
         this.reqCpaData.data["addturnlist"] = currdata;
         if (main.gameIcon1Array.length > 0) {
@@ -197,6 +199,9 @@ export default class CPAPage extends cc.Component {
         if (iosArray.length > 0) {
             this.reqCpaData["苹果不显示"] = iosArray;
         }
+        this.reqCpaData.data["mainIcons"]["itemlist"] = mainIcon;
+        this.reqCpaData.data["mainIcon"]["itemlist"] = mainIcon;
+
         this.reqCpaData["加载页显示CPA"] = this.cpa2flag;
         this.reqCpaData["CPA关"] = this.cpa1flag;
         this.reqCpaData["CPA黑名单"] = main.blackArray;
@@ -225,7 +230,7 @@ export default class CPAPage extends cc.Component {
         });
     }
     public submitCPB(): void {
-        this.cpbAPI.cpbSubmit(this.cpaArray, this.cpbNames, this.cpaName.replace("a", "b"));
+        this.cpbAPI.cpbSubmit(this.cpaArray, this.cpbNames, this.cpaName.replace("a", "b"), () => { main.showByMengceng(); });
         //   this.drewImg(this.cpbNames);
     }
 

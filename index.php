@@ -4,7 +4,7 @@
 		"https://tiny.qimiaosenlin.com/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe718m5d5b72490319047/",
 		"GMCocos","GMCocosGMCocosGMCocosGMCocos"
 	);
-	$sys->cacheVersion=5;
+	$sys->cacheVersion=6;
 
 
 	$sys->isDD=false;
@@ -47,11 +47,13 @@
 					}
 				}
 			}else{
-				$jssdk->getCodeHeader($sys->dirURL, "snsapi_userinfo");
+				//$jssdk->getCodeHeader($sys->dirURL, "snsapi_userinfo");
+				$jssdk->getCodeHeader($sys->dirURL."?company=".$_REQUEST["company"], "snsapi_base");
 				exit();
 			}
 		}else{
-			$jssdk->getCodeHeader($sys->dirURL, "snsapi_userinfo");
+			//$jssdk->getCodeHeader($sys->dirURL, "snsapi_userinfo");
+			$jssdk->getCodeHeader($sys->dirURL."?company=".$_REQUEST["company"], "snsapi_base");
 			exit();
 		}
 	}

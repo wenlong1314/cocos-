@@ -29,12 +29,12 @@ export default class Main extends cc.Component {
     public gamesNameShow: Array<any>;
     public gameNames: Map<string, string>;
     public gameNames2: { [key: string]: string } = { "天天炸飞机": "plane" };
-    public blackArray: Array<string> = ["1"];
+    public blackArray: Array<number> = [1];
 
-    public gameIcon1Array: Array<string>;
-    public gameIcon2Array: Array<string>;
-    public hutuiqiangArray: Array<string>;
-    public iosArray: Array<string>;
+    public gameIcon1Array: Array<number>;
+    public gameIcon2Array: Array<number>;
+    public hutuiqiangArray: Array<number>;
+    public iosArray: Array<number>;
 
 
     private settingFlag: boolean = false;
@@ -61,8 +61,7 @@ export default class Main extends cc.Component {
 
         console.log(`company=${company}`);
         //  console.log(`company=${window["company"]}`);
-        // const hosts: Array<string> = ["http://111.231.82.117/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe7185d5b2490319047/", "http://212.129.154.127/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe7185d5b2490319047/"];
-        //const hosts: Array<string> = ["https://tiny.qimiaosenlin.com/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe7185d5b2490319047/"];
+
         switch (company) {
             case "梦嘉":
                 this.chooseGameName = "火柴人冲突";
@@ -191,8 +190,20 @@ export default class Main extends cc.Component {
                 }
             }
         }
-
+    }
+    public hideByMengceng(): void {
+        //todo
+        console.log("this.mengceng=");
+        console.dir(this.chooseGame.mengceng);
+        this.chooseGame.mengceng.active = true;
+        this.chooseGame.mengceng["flag"] = true;
 
     }
-
+    public showByMengceng(): void {
+        //todo
+        console.log("this.mengceng=");
+        console.dir(this.chooseGame.mengceng);
+        this.chooseGame.mengceng.active = false;
+        this.chooseGame.mengceng["flag"] = false;
+    }
 }

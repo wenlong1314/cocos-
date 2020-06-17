@@ -1,4 +1,4 @@
-import { _cdn2, get, gameRoot, hostsArray, gameName } from "./global";
+import { _cdn2, get, gameRoot } from "./global";
 import { main } from "./Main";
 
 
@@ -15,6 +15,7 @@ export default class CPBAPI {
     public cpbName: string;
 
     public cpbSubmit(reqCpaData: any, nameArrs: Array<string>, cpbName: string, callback?: any) {
+        console.log("cpb提交开始")
         this.cpbName = cpbName;
         this.loadBottom("89b68afc-e961-480b-8fca-d5a82cef726e").then(
             (SpriteFrame: any) => {
@@ -34,13 +35,7 @@ export default class CPBAPI {
             (data: any) => {
                 let code = JSON.parse(data);
                 this.crc32name = code["name"];
-                // 兼容雷霆，奇妙
-                let promiseArray: Array<Promise<void>> = [];
-                for (let host of hostsArray) {
-                    let gameRoot = host + gameName + "/";
-                    promiseArray.push(this.postCPBCode(reqCpaData, gameRoot));
-                }
-                return Promise.all(promiseArray);
+                return this.postCPBCode(reqCpaData);
             },
             () => alert("提交cpb图集失败")
         ).then(
@@ -50,8 +45,9 @@ export default class CPBAPI {
                 } else {
                     alert("提交cpb数据失败");
                 }
+                callback && callback();
             },
-            () => alert("提交cpb数据失败")
+            () => { alert("提交cpb数据失败"); callback && callback(); }
         )
 
     }
@@ -60,31 +56,29 @@ export default class CPBAPI {
     public drewTxt(arrs: Array<string>): void {
         let drewCanvas = this.getDrewCanvas();
         const ctx = drewCanvas.getContext("2d");
-        ctx.font = "20px 微软雅黑";
+        ctx.font = "normal bold 20px 微软雅黑";
         ctx.fillStyle = "#ffffff";
         //去重
         this.NameRectMap = new Map();
+        ctx.clearRect(755, 0, 150, 800);
         for (let index in arrs) {
             if (!this.NameRectMap.has(arrs[index])) {
                 let y = parseInt(index) * 30;
-                ctx.fillText(arrs[index], 755, y + 19);
-
+                ctx.fillText(arrs[index], 757, y + 19 + 3);
                 let txt = ctx.measureText(arrs[index]);
-                this.NameRectMap.set(arrs[index], [755, y, Math.round(txt.width), Math.round(txt.actualBoundingBoxAscent + txt.actualBoundingBoxDescent)]);
+                // console.log("文字信息")
+                // console.dir(txt)
+                this.NameRectMap.set(arrs[index], [755, y, Math.round(txt.width) + 4, Math.round(txt.actualBoundingBoxAscent + txt.actualBoundingBoxDescent) + 6 | 26]);
             }
         }
+
         // 文字底,图
         // ctx.drawImage(tmpImg, 0, 0, width, height, x * 150, y * 150, width, height)
         //  this.NamebottomRectMap(tmpImg, 0, 0, width, height, x * 150, y * 150, width, height)
 
         let reqData = drewCanvas.toDataURL().replace(/data:image\/.{0,9};base64,/i, "");
         //  console.log("替换后：");
-        if (main.chooseGameName == "火柴人你瞅啥") {
-            this.reqAllData = { "cpbAtlas": reqData, "cpbAtlasName": "你瞅啥" }
-        } else {
-            this.reqAllData = { "cpbAtlas": reqData, "cpbAtlasName": "其他" }
-        }
-
+        this.reqAllData = { "cpbAtlas": reqData, "cpbAtlasName": "cpbTmp" }
 
     }
     public loadBottom2(uuid: string): Promise<void> {
@@ -108,6 +102,7 @@ export default class CPBAPI {
                 } else {
                     console.log("11111");
                     rs(SpriteFrame);
+                   
                 }
             })
         })
@@ -150,27 +145,33 @@ export default class CPBAPI {
         this.reqCPBData["cpbs"] = cpbs;
 
         if (main.gameIcon1Array.length > 0) {
-            this.reqCPBData["推荐1"] = main.gameIcon1Array;
+            this.reqCPBData["推荐1"] = main.gameIcon1Array.map((curr) => {
+                return curr - 1;
+            });
         }
         if (main.gameIcon2Array.length > 0) {
-            this.reqCPBData["推荐2"] = main.gameIcon2Array;
+            this.reqCPBData["推荐2"] = main.gameIcon2Array.map((curr) => {
+                return curr - 1;
+            });
         }
         if (main.hutuiqiangArray.length > 0) {
-            this.reqCPBData["hutuiqiang"] = main.hutuiqiangArray;
+            this.reqCPBData["hutuiqiang"] = main.hutuiqiangArray.map((curr) => {
+                return curr - 1;
+            });
         }
         if (main.iosArray.length > 0) {
-            this.reqCPBData["苹果不显示"] = main.iosArray;
+            this.reqCPBData["苹果不显示"] = main.iosArray.map((curr) => {
+                return curr - 1;
+            });
         }
         console.log("cpb 数据");
         console.log(this.reqCPBData);
     }
-    public postCPBCode(arrs, gameRoot): Promise<void> {
+    public postCPBCode(arrs): Promise<void> {
         this.decodeCPBData(arrs);
         let data = { "game": main.chooseGameID, "cpb": JSON.stringify(this.reqCPBData), "cpbName": this.cpbName };
-
         //1 准备数据，2上传，3调用
         return new Promise((rs, rj) => {
-
             $.post(gameRoot + "setCPBdata.php", data, rsp => {
                 if (rsp) {
                     rs(rsp);

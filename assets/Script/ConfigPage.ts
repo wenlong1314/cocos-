@@ -54,7 +54,9 @@ export default class ConfigPage extends cc.Component {
                 let nums = this.input3.string.replace(/[^\d,,，。.;\n\t-]/g, "").split(/[,，。.;\n\t]/).filter((value) => {
                     if (value) { return value }
                 })
-                main.blackArray = nums;
+                main.blackArray = nums.map((curr) => {
+                    return Number(curr);
+                });
                 console.log("黑名单数据：" + main.blackArray)
                 alert("修改配置文件成功！");
             });
@@ -91,7 +93,7 @@ export default class ConfigPage extends cc.Component {
         this.submit.children[1].active = false;
         this.submit.children[0].active = true;
         this.time.string = "修改与：" + new Date().toLocaleString();
-        // console.log(node + main.settings["" + node]);
+        console.log(node + main.settings["" + node]);
     }
 
     public show(): void {
@@ -112,6 +114,9 @@ export default class ConfigPage extends cc.Component {
         for (const node of this.nodes) {
             this["" + node].children[1].active = main.settings["" + node];
             this["" + node].children[0].active = !main.settings["" + node];
+
+            this["" + node].off(cc.Node.EventType.TOUCH_START);
+
             this["" + node].on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
                 this.changeNode(node);
             });
@@ -119,7 +124,9 @@ export default class ConfigPage extends cc.Component {
         let nums = this.input3.string.replace(/[^\d,,，。.;\n\t-]/g, "").split(/[,，。.;\n\t]/).filter((value) => {
             if (value) { return value }
         })
-        main.blackArray = nums;
+        main.blackArray = nums.map((curr) => {
+            return Number(curr);
+        });
         console.log("黑名单数据：" + main.blackArray)
     }
 }

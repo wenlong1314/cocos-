@@ -1,4 +1,4 @@
-import { _cdn2,  GameCode, post } from "./global";
+import { _cdn2, GameCode, post } from "./global";
 
 import { prefabs } from "./prefabs";
 import GMPage from "./GMPage";
@@ -31,6 +31,7 @@ export default class CodeShow extends cc.Component {
             btn.on(cc.Node.EventType.TOUCH_START, () => {
                 console.log("删除");
                 arrs.splice(Number.parseInt(index), 1);
+
                 console.log(arrs)
                 this.init(arrs, gmPage);
                 post({ op: "removeCode", game: main.chooseGameID, code: arrs[index].code + "" }, rsp => {

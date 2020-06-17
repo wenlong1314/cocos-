@@ -1,5 +1,5 @@
 <?php
-$key = array(
+$keys = array(
 	"XWAluhvB2Jjljxn1jKgQUFieIPpMCaOO", //2号机
 	"mC9JC8GKdPyyncZPL8mCP1UjdUiWGGf9", //3号机
 	"GlOl2ZYh5iiZgLedWLgoSYW3yCZ7kD7a", //苹果机
@@ -8,7 +8,6 @@ $key = array(
 if (!isset($_REQUEST["cpbAtlas"])) {
 	exit();
 }
-// var_dump($_REQUEST);
 
 if (strstr($_REQUEST["cpbAtlas"], 'http')) {
 	$data['source'] = ['url' => $_REQUEST["cpbAtlas"]];
@@ -16,19 +15,18 @@ if (strstr($_REQUEST["cpbAtlas"], 'http')) {
 	// base64
 	//  创建将数据流文件写入我们创建的文件内容中
 	//图片放到"https://tiny.qimiaosenlin.com/cdn/cpb/00083160BA5946B6.png
+
 	$output_file = "../cdn/cpb/" . $_REQUEST["cpbAtlasName"] . ".png";
 	file_put_contents($output_file, base64_decode($_REQUEST["cpbAtlas"]));
-	if ($_REQUEST["cpbAtlasName"] != "你瞅啥") {
-		$output_fileUrl = "https://tiny.qimiaosenlin.com/cdn/cpb/cpbTmp.png"; //$output_fileUrl = "https://tinypng.com/images/panda-happy.png";
-	} else {
-		$output_fileUrl = "https://hcrncsdl.leiting.com/cdn/cpb/cpbTmp.png";
-	}
+	$output_fileUrl = "https://tiny.qimiaosenlin.com/cdn/cpb/" . $_REQUEST["cpbAtlasName"] . ".png";
+	//$output_fileUrl = "https://tinypng.com/images/panda-happy.png";
 	$data['source'] = ['url' => $output_fileUrl];
-	//print_r($output_fileUrl);
+	
 }
 $url = 'https://api.tinify.com/shrink';
-
-$huawei_res = json_decode(httpPost($url, $data, $key[rand(0, count($key) - 1)])); //返回json
+$key=$keys[rand(0, count($keys) - 1)];
+$result=httpPost($url, $data, $key);
+$huawei_res = json_decode($result); //返回json
 if ($huawei_res->output) {
 	//	var_dump($huawei_res);
 	//	echo "<br />";
@@ -43,6 +41,12 @@ if ($huawei_res->output) {
 		. "." . substr($huawei_res->output->type, 6);
 	// echo	dechex(0x100000000 + $imgName);
 	file_put_contents("../cdn/cpb/" . $imgName2, $imgdata);
+	//	echo "{\"success\":true}";
+	// echo "{\"success\":true,\"name\":" . $imgName2 .
+	// 	",\"size1\":" . $huawei_res->input->size .
+	// 	",\"size2\":" . $huawei_res->output->size .
+	// 	",\"tinyurl\":" . $huawei_res->output->url .
+	// 	",\"url\":\"../cdn/cpb/" . $imgName2 . "}";
 	$arr = array();
 	$arr["success"] = true;
 	$arr["name"] =  $imgName2;
@@ -53,7 +57,8 @@ if ($huawei_res->output) {
 	echo json_encode($arr);
 } else {
 	//echo $huawei_res;
-	echo "{\"fail\":fail}";
+	echo "{\"fail\":fail,\"key\":".$key."}";
+	
 }
 
 function httpPost($url, $data, $key)

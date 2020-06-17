@@ -7,12 +7,7 @@ export const _cdn2: string = _host + "cdn/";
 //export let company: string;
 export const webRoot: string = _cdn2 + gameName + "/web/";
 export const gameRoot: string = _host + gameName + "/";
-
 export const cdn: string = "https://cdn-tiny.qimiaosenlin.com/cdn/";
-
-//export const hostsArray: Array<string> = ["http://111.231.82.117/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe7185d5b2490319047/", "http://212.129.154.127/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe7185d5b2490319047/"];
-export const hostsArray: Array<string> = ["https://tiny.qimiaosenlin.com/"];
-
 let blackArray: Array<number> = [];
 let table = [
     0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f, 0xe963a535, 0x9e6495a3,
@@ -108,7 +103,7 @@ export function get(req: Req, onComplete: (rsp: any) => void): void {
 
 export function post(req: Req, onComplete: (rsp: any) => void): void {
     let url: string = getPostURL(req);
-    console.log("post " + url);
+    //console.log("post " + url);
     // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=utf-8');
     //  xhr.send("req="+JSON.stringify(req));
     $.post(url, req, rsp => {

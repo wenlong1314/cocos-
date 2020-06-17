@@ -1,4 +1,4 @@
-import { _cdn2} from "./global";
+import { _cdn2 } from "./global";
 import ChooseBox from "./ChooseBox";
 import { main } from "./Main";
 
@@ -6,10 +6,13 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class ChooseGame extends cc.Component {
+    @property(cc.Node)
+    private btn2Prefab: cc.Node = null;
     public mengceng: cc.Node;
     public btn: cc.Node;
     private chooseBox: ChooseBox;
     private chooseGame: ChooseGame;
+
     public init(): void {
         console.log("init ChooseGame");
         this.chooseGame = this;
@@ -23,6 +26,9 @@ export default class ChooseGame extends cc.Component {
             this.chooseBox.init(main.gamesNameShow, this.chooseGame);
         });
         this.mengceng.on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
+            if (this.mengceng["flag"]) {
+                return;
+            }
             this.mengceng.active = false;
             this.chooseBox.node.active = false;
         });

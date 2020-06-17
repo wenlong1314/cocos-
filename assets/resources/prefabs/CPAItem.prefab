@@ -1621,7 +1621,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 158,
+      "width": 478,
       "height": 40
     },
     "_anchorPoint": {
@@ -1633,8 +1633,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -78,
-        20,
+        2,
+        0,
         0,
         0,
         0,
@@ -1876,7 +1876,7 @@
     "_useOriginalSize": false,
     "_string": "",
     "returnType": 0,
-    "maxLength": 40,
+    "maxLength": 150,
     "_tabIndex": 0,
     "editingDidBegan": [],
     "textChanged": [],
