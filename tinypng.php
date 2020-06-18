@@ -5,29 +5,41 @@ $keys = array(
 	"GlOl2ZYh5iiZgLedWLgoSYW3yCZ7kD7a", //苹果机
 	"9E0RzqlKoDEm6hA2B0VMSDmXejvzSQbp" //358315553
 );
-if (!isset($_REQUEST["cpbAtlas"])) {
+if (!isset($_REQUEST["cpbAtlasName"])) {
 	exit();
 }
-
-if (strstr($_REQUEST["cpbAtlas"], 'http')) {
-	$data['source'] = ['url' => $_REQUEST["cpbAtlas"]];
-} else {
-	// base64
-	//  创建将数据流文件写入我们创建的文件内容中
-	//图片放到"https://tiny.qimiaosenlin.com/cdn/cpb/00083160BA5946B6.png
-
-	$output_file = "../cdn/cpb/" . $_REQUEST["cpbAtlasName"] . ".png";
-	file_put_contents($output_file, base64_decode($_REQUEST["cpbAtlas"]));
+if (!isset($_REQUEST["cpbAtlas"])) {
 	$output_fileUrl = "https://tiny.qimiaosenlin.com/cdn/cpb/" . $_REQUEST["cpbAtlasName"] . ".png";
-	//$output_fileUrl = "https://tinypng.com/images/panda-happy.png";
-	$data['source'] = ['url' => $output_fileUrl];
-	
+	if(move_uploaded_file( $_FILES['cpbAtlas']['tmp_name'], "../cdn/cpb/" . $_REQUEST["cpbAtlasName"] . ".png")){
+		$data['source'] = ['url' => $output_fileUrl];
+	}else{
+		echo "路径不行";
+		exit();
+	}
+}else{
+		if (preg_match('/http/',$_REQUEST["cpbAtlas"])) {
+			echo $_REQUEST["cpbAtlas"];
+			$data['source'] = ['url' => $_REQUEST["cpbAtlas"]];
+		}else {
+			// base64
+			//  创建将数据流文件写入我们创建的文件内容中
+			//图片放到"https://tiny.qimiaosenlin.com/cdn/cpb/00083160BA5946B6.png
+
+			$output_file = "../cdn/cpb/" . $_REQUEST["cpbAtlasName"] . ".png";
+			file_put_contents($output_file, base64_decode($_REQUEST["cpbAtlas"]));
+			$output_fileUrl = "https://tiny.qimiaosenlin.com/cdn/cpb/" . $_REQUEST["cpbAtlasName"] . ".png";
+			//$output_fileUrl = "https://tinypng.com/images/panda-happy.png";
+			$data['source'] = ['url' => $output_fileUrl];
+			
+		}
 }
+
 $url = 'https://api.tinify.com/shrink';
 $key=$keys[rand(0, count($keys) - 1)];
 $result=httpPost($url, $data, $key);
 $huawei_res = json_decode($result); //返回json
-if ($huawei_res->output) {
+//var_dump($huawei_res) ;
+if (property_exists($huawei_res,'output') ){
 	//	var_dump($huawei_res);
 	//	echo "<br />";
 	//	echo $huawei_res['output']['url'];这样读取失败
