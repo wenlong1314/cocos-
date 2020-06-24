@@ -143,6 +143,7 @@ export default class CPAPage extends cc.Component {
             message += curr.path ? "" : " 路径";
             if (message !== null && message !== undefined && message !== '') {
                 alert("第" + item + "项目的" + message + "未上传");
+                main.showByMengceng();
                 return;
             }
         }
@@ -255,6 +256,7 @@ export default class CPAPage extends cc.Component {
             main.gameUpdata();
             if (this.cpa1ToMore) {
                 alert("不能全部勾推荐1,系统已自动取消一个勾选")
+                this.cpa1ToMore = false;
             }
         });
         //   this.drewImg(this.cpbNames);
