@@ -4,7 +4,8 @@ import CPAShow from "./CPAShow";
 import CPBAPI from "./CPBAPI";
 
 
-
+declare let company: string;
+declare let currIp: string;
 const { ccclass, property } = cc._decorator;
 
 // https://cdn-tiny.qimiaosenlin.com/cdn/cpa/00013193CEC37D18.png
@@ -26,6 +27,7 @@ export default class CPAPage extends cc.Component {
     public cpa1flag: boolean;
     public cpa2flag: boolean;
 
+    public cpa1ToMore: boolean = false;
     public init(): void {
         console.log("init CPAPage");
         this.cpaPage = this;
@@ -39,7 +41,9 @@ export default class CPAPage extends cc.Component {
 
         this.btn.on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
             console.log(this.cpaArray);
-            let item: CpaData = {};
+            let item: CpaData = {
+                IOS: true
+            };
             this.cpaArray.push(item);
             this.cpaShow.init(this.cpaArray, this.cpaPage, true);
         });
@@ -187,18 +191,34 @@ export default class CPAPage extends cc.Component {
             mainIcon.push(Number(item));
         }
         this.reqCpaData.data["addturnlist"] = currdata;
-        if (main.gameIcon1Array.length > 0) {
-            this.reqCpaData.data["gameIcon1"]["itemlist"] = main.gameIcon1Array;
+
+
+        this.reqCpaData.data["gameIcon1"]["itemlist"] = main.gameIcon1Array;
+        this.reqCpaData.data["gameIcon2"]["itemlist"] = main.gameIcon2Array;
+        this.reqCpaData.data["hutuiqiang"]["itemlist"] = main.hutuiqiangArray;
+        this.reqCpaData["苹果不显示"] = iosArray;
+
+        // if (main.gameIcon1Array.length > 0) {
+        //     this.reqCpaData.data["gameIcon1"]["itemlist"] = main.gameIcon1Array;
+        // }
+        // if (main.gameIcon2Array.length > 0) {
+        //     this.reqCpaData.data["gameIcon2"]["itemlist"] = main.gameIcon2Array;
+        // }
+        // if (main.hutuiqiangArray.length > 0) {
+        //     this.reqCpaData.data["hutuiqiang"]["itemlist"] = main.hutuiqiangArray;
+        // }
+        // if (iosArray.length > 0) {
+        //     this.reqCpaData["苹果不显示"] = iosArray;
+        // }
+
+        if (main.gameIcon1Array.length == (this.cpaArray.length - 1)) {
+            console.log("推荐1全选")
+            main.gameIcon1Array.pop();
+            this.cpa1ToMore = true;
+        } else {
+            console.log("推荐1未全选", main.gameIcon1Array.length, this.cpaArray.length)
         }
-        if (main.gameIcon2Array.length > 0) {
-            this.reqCpaData.data["gameIcon2"]["itemlist"] = main.gameIcon2Array;
-        }
-        if (main.hutuiqiangArray.length > 0) {
-            this.reqCpaData.data["hutuiqiang"]["itemlist"] = main.hutuiqiangArray;
-        }
-        if (iosArray.length > 0) {
-            this.reqCpaData["苹果不显示"] = iosArray;
-        }
+
         this.reqCpaData.data["mainIcons"]["itemlist"] = mainIcon;
         this.reqCpaData.data["mainIcon"]["itemlist"] = mainIcon;
 
@@ -218,7 +238,7 @@ export default class CPAPage extends cc.Component {
         // console.log(this.cpaArray);
         console.log("填写完毕开始上传");
         post({
-            op: "setCPA", game: main.chooseGameID, cpaName: this.cpaName.split(/\.(\w+)/i)[0], cpa: JSON.stringify(this.reqCpaData), imgDatas: JSON.stringify(this.imgDatas)
+            op: "setCPA", company: company, currIp: currIp, game: main.chooseGameID, cpaName: this.cpaName.split(/\.(\w+)/i)[0], cpa: JSON.stringify(this.reqCpaData), imgDatas: JSON.stringify(this.imgDatas)
         }, (res) => {
             console.log(res)
             if (res.success) {
@@ -230,7 +250,13 @@ export default class CPAPage extends cc.Component {
         });
     }
     public submitCPB(): void {
-        this.cpbAPI.cpbSubmit(this.cpaArray, this.cpbNames, this.cpaName.replace("a", "b"), () => { main.showByMengceng(); });
+        this.cpbAPI.cpbSubmit(this.cpaArray, this.cpbNames, this.cpaName.replace("a", "b"), () => {
+            main.showByMengceng();
+            main.gameUpdata();
+            if (this.cpa1ToMore) {
+                alert("不能全部勾推荐1,系统已自动取消一个勾选")
+            }
+        });
         //   this.drewImg(this.cpbNames);
     }
 

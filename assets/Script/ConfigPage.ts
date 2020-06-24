@@ -2,7 +2,8 @@ import { _cdn2, get, post } from "./global";
 import { main } from "./Main";
 
 const { ccclass, property } = cc._decorator;
-
+declare let company: string;
+declare let currIp: string;
 @ccclass
 export default class ConfigPage extends cc.Component {
 
@@ -49,7 +50,7 @@ export default class ConfigPage extends cc.Component {
             //console.log(main.settings);
             main.settings.系统配置版本 = main.getTime();
             console.log(main.settings);
-            post({ op: "setSettings", game: main.chooseGameID, code: JSON.stringify(main.settings) }, rsp => {
+            post({ op: "setSettings", currIp: currIp, company: company, game: main.chooseGameID, code: JSON.stringify(main.settings) }, rsp => {
 
                 let nums = this.input3.string.replace(/[^\d,,，。.;\n\t-]/g, "").split(/[,，。.;\n\t]/).filter((value) => {
                     if (value) { return value }
@@ -77,7 +78,10 @@ export default class ConfigPage extends cc.Component {
                     let nums = input.string.replace(/[^\d,,，。.;\n\t-]/g, "").split(/[,，。.;\n\t]/).filter((value) => {
                         if (value) { return value }
                     })
-                    main.settings["" + this.settingsInput[input["index"]]] = nums;
+                    let tmp=nums.map((curr) => {
+                        return Number(curr);
+                    })
+                    main.settings["" + this.settingsInput[input["index"]]] = tmp;
                     input.string = nums.toString();
                     console.log("修改值");
                     //  console.log(main.settings["" + this.settingsInput[i]])

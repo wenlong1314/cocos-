@@ -4,7 +4,7 @@ import { main } from "./Main";
 
 const { ccclass, property } = cc._decorator;
 //export let cpbAPI: CPBAPI;
-
+declare let company: string;
 @ccclass
 export default class CPBAPI {
     public NameRectMap: Map<string, Array<number>> = new Map();
@@ -80,7 +80,7 @@ export default class CPBAPI {
                     let txt = ctx.measureText(arrs[index]);
                     // console.log("文字信息")
                     // console.dir(txt)
-                    this.NameRectMap.set(arrs[index], [755, y, Math.round(txt.width) + 4, Math.round(txt.actualBoundingBoxAscent + txt.actualBoundingBoxDescent) + 6 | 26]);
+                    this.NameRectMap.set(arrs[index], [755, y + 2, Math.round(txt.width) + 4, Math.round(txt.actualBoundingBoxAscent + txt.actualBoundingBoxDescent) + 6 | 26]);
                 }
             }
             /**
@@ -133,21 +133,6 @@ export default class CPBAPI {
         })
     }
     public postTinyImg(data): Promise<string> {
-        // let data = { "0": "https://tinypng.com/images/panda-happy.png" };// url 写法
-        // this.reqAllData = { "cpbAtlas": reqData, "cpbAtlasName": "cpbTmp" }
-
-        // return new Promise((rs, rj) => {
-        //     $.post(gameRoot + "tinypng.php", data, rsp => {
-        //         if (rsp) {
-        //             rs(rsp);
-        //         } else {
-        //             if (rj) {
-        //                 rj(rsp);
-        //             }
-        //         }
-        //     }
-        //     );
-
         return new Promise((resolve, reject) => {
             console.log(this.reqAllData)
             let fd = new FormData();
@@ -161,7 +146,7 @@ export default class CPBAPI {
                     let response = JSON.parse(xhr.responseText);
                     console.log(response)
                     resolve(xhr.responseText);
-                   // resolve.apply(xhr, xhr.responseText);
+                    // resolve.apply(xhr, xhr.responseText);
                 }
             };
             xhr.onerror = err => {
@@ -239,6 +224,7 @@ export default class CPBAPI {
 
     public getDrewCanvas(): HTMLCanvasElement {
         if (document.getElementById("drewCanvas")) {
+
         } else {
             var canvas = document.createElement('canvas');
             document.body.appendChild(canvas);

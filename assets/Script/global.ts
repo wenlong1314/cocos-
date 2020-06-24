@@ -71,6 +71,8 @@ export interface Req {
     imgDatas?: any;
     t?: string;
     shares?: string;
+    company?: string;
+    currIp?: string;
 }
 export interface GameCode {
     code?: number;

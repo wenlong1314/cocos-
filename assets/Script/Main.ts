@@ -11,6 +11,7 @@ import SharePage from "./SharePage";
 const { ccclass, property } = cc._decorator;
 export let main: Main;
 declare let company: string;
+declare let currIp: string;
 declare let wx: any;
 @ccclass
 export default class Main extends cc.Component {
@@ -46,6 +47,7 @@ export default class Main extends cc.Component {
         if (!window["company"]) {
             console.log("debugger");
             company = "";
+            currIp = "测试ip";
         }
         this.tabs = this.node.getChildByName("tabs").children;
         this.configPage = this.node.getChildByName("pages").getChildByName("configPage").getComponent(ConfigPage);
@@ -59,39 +61,44 @@ export default class Main extends cc.Component {
 
         //if(window["wx"]){wx.setEnableDebug({ enableDebug: true });} 
 
-        console.log(`company=${company}`);
+        console.log(`company=${company},currIp=${currIp},`);
         //  console.log(`company=${window["company"]}`);
+        let localGame = localStorage.getItem('gameName');
+       
 
         switch (company) {
             case "梦嘉":
-                this.chooseGameName = "火柴人冲突";
                 this.gamesNameShow = ["火柴人冲突", "怪物工厂2", "射了个箭"];
+                this.chooseGameName = (this.gamesNameShow.indexOf(localGame) > 0 && localGame) || "火柴人冲突";
                 this.gameNames = new Map<string, string>([
                     ["火柴人冲突", "sword"], ["怪物工厂2", "rush2"], ["射了个箭", "sword3"]
                 ]);
                 break;
             case "雷霆":
-                this.chooseGameName = "我特能耍剑";
                 this.gamesNameShow = ["我特能耍剑", "丧尸干仗"];
+                this.chooseGameName = (this.gamesNameShow.indexOf(localGame) > 0 && localGame) || "我特能耍剑";
                 this.gameNames = new Map<string, string>([
                     ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"]]);
                 break;
             case "奇妙":
-                this.chooseGameName = "主公贼有钱";
                 this.gamesNameShow = ["主公贼有钱", "火柴人冲突", "火柴人你瞅啥", "数字之城", "怪物冲突",
-                    "怪物工厂2", "天天上楼梯", "我开坦克贼6", "射了个箭", "我特能耍剑", "丧尸干仗", "天天炸飞机"];
+                    "怪物工厂2", "天天上楼梯", "我开坦克贼6", "射了个箭", "我特能耍剑", "丧尸干仗", "天天炸飞机", "火柴人瞅你咋地"];
+                this.chooseGameName = (this.gamesNameShow.indexOf(localGame) > 0 && localGame) || "主公贼有钱";
                 this.gameNames = new Map<string, string>([["主公贼有钱", "push"], ["火柴人冲突", "sword"], ["火柴人你瞅啥", "sword2"],
                 ["数字之城", "sudoku"], ["怪物冲突", "rush2sword"], ["怪物工厂2", "rush2"], ["天天上楼梯", "climb"], ["我开坦克贼6", "tank"],
-                ["射了个箭", "sword3"], ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"], ["天天炸飞机", "plane"]]);
+                ["射了个箭", "sword3"], ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"], ["天天炸飞机", "plane"], ["火柴人瞅你咋地", "sword4"]]);
                 break;
             default:
-                this.chooseGameName = "主公贼有钱";
-                this.gamesNameShow = ["主公贼有钱"];
-                this.gameNames = new Map<string, string>([["主公贼有钱", "push"]]);
+                this.gamesNameShow = ["主公贼有钱", "火柴人瞅你咋地"];
+                this.chooseGameName = (this.gamesNameShow.indexOf(localGame) > 0 && localGame) || "主公贼有钱";
+                this.gameNames = new Map<string, string>([["主公贼有钱", "push"], ["火柴人瞅你咋地", "sword4"]]);
                 break;
-
         }
-
+        // document.execCommand('Copy');
+        // if (document.execCommand('Copy')) {
+        //     // 复制成功
+        //     console.log("复制成功")
+        // }
         //     this.chooseGameName = "主公贼有钱";
         //     this.gamesNameShow = ["主公贼有钱", "火柴人冲突", "火柴人你瞅啥", "数字之城", "怪物冲突",
         //         "怪物工厂2", "天天上楼梯", "我开坦克贼6", "射了个箭", "我特能耍剑", "丧尸干仗", "天天炸飞机"];
@@ -165,7 +172,7 @@ export default class Main extends cc.Component {
         let mydata =
             time.getUTCFullYear() +
             (100 + (time.getMonth() + 1)).toString().substring(1) +
-            (100 + time.getDay()).toString().substring(1) +
+            (100 + time.getDate()).toString().substring(1) +
             (100 + time.getHours()).toString().substring(1) +
             (100 + time.getMinutes()).toString().substring(1) +
             (100 + time.getSeconds()).toString().substring(1);

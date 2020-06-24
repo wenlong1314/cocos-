@@ -23,6 +23,8 @@ export default class ChooseBox extends cc.Component {
                 if (main.gameNames.has(arrs[index])) {
                     console.log("zhans");
                     main.chooseGameID = main.gameNames.get(arrs[index]);
+                   // arrs[index];
+                    localStorage.setItem('gameName',arrs[index]);
                     main.gameUpdata();
                 }
                 this.hide();

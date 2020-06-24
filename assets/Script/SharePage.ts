@@ -3,7 +3,8 @@ import { Share } from "./Settings";
 import { main } from "./Main";
 
 import ShareShow from "./ShareShow";
-
+declare let company: string;
+declare let currIp: string;
 const { ccclass, property } = cc._decorator;
 
 // https://cdn-tiny.qimiaosenlin.com/cdn/cpa/00013193CEC37D18.png
@@ -104,7 +105,7 @@ export default class SharePage extends cc.Component {
 
         console.log("填写完毕开始上传");
         post({
-            op: "setShares", game: main.chooseGameID, code: JSON.stringify(main.settings), imgDatas: JSON.stringify(this.imgDatas)
+            op: "setShares", company: company, currIp: currIp, game: main.chooseGameID, code: JSON.stringify(main.settings), imgDatas: JSON.stringify(this.imgDatas)
         }, (res) => {
             console.log(res)
             alert("提交成功");

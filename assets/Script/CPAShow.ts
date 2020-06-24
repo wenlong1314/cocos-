@@ -5,6 +5,7 @@ import CPBAPI from "./CPBAPI";
 
 const { ccclass, property } = cc._decorator;
 declare let wx: any;
+declare let currIp: string;
 @ccclass
 export default class CPAShow extends cc.Component {
 
@@ -42,7 +43,7 @@ export default class CPAShow extends cc.Component {
             let btn = item.getChildByName("btn");
             if (arrs[index].urlBase64) {
                 console.log("新增的数据")
-                //this.base64ShowImg(arrs[index].urlBase64, arrs[index].imgUrl, img);
+                this.base64ShowImg(arrs[index].urlBase64, arrs[index].imgUrl, img);
             } else if (arrs[index].imgUrl) {
                 // console.log("动态加载图片的方法")
                 var url = "https://cdn-tiny.qimiaosenlin.com/cdn/cpa/" + arrs[index].imgUrl;//图片路径

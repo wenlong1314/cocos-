@@ -43,7 +43,7 @@ export default class ShareShow extends cc.Component {
             } else {
                 //  alert(index + "无图片数据");
             }
-            input1.string = arrs[index].query.replace("id=", "") || "";
+            input1.string = arrs[index].query && (arrs[index].query.replace("id=", "") )|| "";
             input2.string = arrs[index].title || "";
 
             // input1.node.
