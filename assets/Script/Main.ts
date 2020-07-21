@@ -89,9 +89,9 @@ export default class Main extends cc.Component {
                 ["射了个箭", "sword3"], ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"], ["天天炸飞机", "plane"], ["火柴人瞅你咋地", "sword4"]]);
                 break;
             default:
-                this.gamesNameShow = ["主公贼有钱", "火柴人瞅你咋地"];
+                this.gamesNameShow = ["主公贼有钱", "火柴人瞅你咋地","小小骑士团"];
                 this.chooseGameName = (this.gamesNameShow.indexOf(localGame) > 0 && localGame) || "主公贼有钱";
-                this.gameNames = new Map<string, string>([["主公贼有钱", "push"], ["火柴人瞅你咋地", "sword4"]]);
+                this.gameNames = new Map<string, string>([["主公贼有钱", "push"], ["小小骑士团", "kittyKnight"],["火柴人瞅你咋地", "sword4"]]);
                 break;
         }
         // document.execCommand('Copy');

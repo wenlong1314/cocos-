@@ -4,16 +4,15 @@ require_once "../common/jssdk.php";
 		"https://tiny.qimiaosenlin.com/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe718m5d5b72490319047/",
 		"GMCocos","GMCocosGMCocosGMCocosGMCocos"
 	);
-$sys->cacheVersion=6;
+$sys->cacheVersion = 6;
 
 
 $sys->isDD = false;
 $sys->isTB = false;
 //	$sys->isWX=false;
 $testing = true;
+$webPath = "../cdn/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe718m5d5b72490319047/web" . "/"; //避免被正则匹配到
 
-$webPath = "https://tiny.qimiaosenlin.com/cdn/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe718m5d5b72490319047/w" . "eb/";
-//$webPath="https://cdn-tiny.qimiaosenlin.com/cdn/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe718m5d5b72490319047/web/";
 $wxImgUrl = $webPath . "resource/00007160F1D2E72B.jpg";
 
 //$openId="fake";
@@ -119,7 +118,10 @@ if ($sys->isDD) {
 			var useZip = true;
 			var testing = true;
 			var useCDN = true;
-			var webPath = "<?php echo $webPath ?>";
+		window.showCompanyNames = true;
+		window.mainImportPath = "assets/main/import/";
+		window.webPath = "<?php echo $webPath ?>";
+		window.ress = {};
 			var isWX = false;
 			var isDD = false;
 			var isTB = false;

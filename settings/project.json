@@ -40,7 +40,8 @@
     "TypeScript Polyfill",
     "3D Physics/cannon.js",
     "3D Physics/Builtin",
-    "3D Particle"
+    "3D Particle",
+    "SafeArea"
   ],
   "group-list": [
     "default"
@@ -57,7 +58,7 @@
     "height": 640,
     "width": 960
   },
-  "last-module-event-record-time": 1592534879085,
+  "last-module-event-record-time": 1595311334064,
   "assets-sort-type": "name",
   "facebook": {
     "appID": "",
@@ -69,5 +70,7 @@
       "enable": false
     }
   },
-  "migrate-history": []
+  "migrate-history": [
+    "cloud-function"
+  ]
 }

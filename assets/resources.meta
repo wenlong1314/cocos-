@@ -1,7 +1,20 @@
 {
-  "ver": "1.0.1",
-  "uuid": "edc8d755-bfa6-4e3b-83c7-52571824f652",
-  "isSubpackage": false,
-  "subpackageName": "",
+  "ver": "1.1.2",
+  "uuid": "c54888bb-438d-42cb-b4c3-744e3818f9a3",
+  "isBundle": true,
+  "bundleName": "resources",
+  "priority": 8,
+  "compressionType": {
+    "web-mobile": "default"
+  },
+  "optimizeHotUpdate": {
+    "web-mobile": false
+  },
+  "inlineSpriteFrames": {
+    "web-mobile": false
+  },
+  "isRemoteBundle": {
+    "web-mobile": false
+  },
   "subMetas": {}
 }
