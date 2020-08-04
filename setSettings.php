@@ -16,8 +16,8 @@
 			mb_convert_encoding($logCode,"GBK","UTF-8");
 			file_put_contents ($logFileName,$logCode,FILE_APPEND);
 		}
-		echo "{\"success\":true}";
-		echo "https://tiny.qimiaosenlin.com/cdn/Log/log.txt";
+		echo "{\"success\":true,\"logUrl\":\"https://tiny.qimiaosenlin.com/cdn/Log/log.txt\"}";
+	
 	}
 	
 ?>

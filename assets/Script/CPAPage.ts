@@ -146,6 +146,11 @@ export default class CPAPage extends cc.Component {
                 main.showByMengceng();
                 return;
             }
+            if (!/^wx[0-9a-f]{16}$/.test(curr.appId)) {
+                alert("appid 格式不对，请检查");
+                main.showByMengceng();
+                return;
+            }
         }
         this.decodeData();
     }
