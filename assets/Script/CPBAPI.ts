@@ -152,6 +152,12 @@ export default class CPBAPI {
             xhr.onerror = err => {
                 reject(err);
             };
+            xhr.ontimeout = function () {
+                console.error('The request for  timed out.');
+                reject('The request for  timed out.');
+            };
+            console.log('设置请求超时timed out.');
+            xhr.timeout = 100 * 1000;
             xhr.open("POST", gameRoot + "tinypng.php", true);
             xhr.send(fd);
 

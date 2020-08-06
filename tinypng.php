@@ -39,6 +39,7 @@ $key=$keys[rand(0, count($keys) - 1)];
 $result=httpPost($url, $data, $key);
 $huawei_res = json_decode($result); //返回json
 //var_dump($huawei_res) ;
+$arr = array();
 if (property_exists($huawei_res,'output') ){
 	//	var_dump($huawei_res);
 	//	echo "<br />";
@@ -59,7 +60,7 @@ if (property_exists($huawei_res,'output') ){
 	// 	",\"size2\":" . $huawei_res->output->size .
 	// 	",\"tinyurl\":" . $huawei_res->output->url .
 	// 	",\"url\":\"../cdn/cpb/" . $imgName2 . "}";
-	$arr = array();
+	
 	$arr["success"] = true;
 	$arr["name"] =  $imgName2;
 	$arr["size1"] = $huawei_res->input->size;
@@ -69,7 +70,9 @@ if (property_exists($huawei_res,'output') ){
 	echo json_encode($arr);
 } else {
 	//echo $huawei_res;
-	echo "{\"fail\":fail,\"key\":".$key."}";
+	$arr["fail"] = true;
+	$arr["key"] = $key;
+	echo json_encode($arr);
 	
 }
 
