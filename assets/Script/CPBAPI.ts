@@ -145,7 +145,12 @@ export default class CPBAPI {
                 if (state === 4 && xhr.status == 200) {
                     let response = JSON.parse(xhr.responseText);
                     console.log(response)
-                    resolve(xhr.responseText);
+                    if (response.success) {
+                        resolve(xhr.responseText);
+                    } else {
+                        reject()
+                    }
+
                     // resolve.apply(xhr, xhr.responseText);
                 }
             };
@@ -158,7 +163,7 @@ export default class CPBAPI {
             };
             console.log('设置请求超时timed out.');
             xhr.timeout = 100 * 1000;
-            xhr.open("POST", gameRoot + "tinypng.php", true);
+            xhr.open("POST", gameRoot + "tinypng1.php", true);
             xhr.send(fd);
 
         });
