@@ -26,13 +26,11 @@ export default class CPAShow extends cc.Component {
         this.content.removeAllChildren();
         this.content.height = (arrs.length - 1) * 160;
         this.initInputHTML();
-        console.log(arrs);
-
-
-
+        // console.log(arrs);
         for (let index in arrs) {
             let item: cc.Node = prefabs.instantiate("CPAItem");
             // console.log(item);
+            
             let img = item.getChildByName("img").getComponent(cc.Sprite);
             let input1 = item.getChildByName("input1").getComponent(cc.EditBox);
             let input2 = item.getChildByName("input2").getComponent(cc.EditBox);
@@ -42,6 +40,10 @@ export default class CPAShow extends cc.Component {
             let checkbox3 = item.getChildByName("checkbox3").getComponent(cc.Toggle);
             let checkbox4 = item.getChildByName("checkbox4").getComponent(cc.Toggle);
             let btn = item.getChildByName("btn");
+            let downBtn = item.getChildByName("down");
+            let upBtn = item.getChildByName("up");
+
+
             if (arrs[index].urlBase64) {
                 console.log("新增的数据")
                 this.base64ShowImg(arrs[index].urlBase64, arrs[index].imgUrl, img);
@@ -129,12 +131,38 @@ export default class CPAShow extends cc.Component {
                 console.log(arrs);
                 this.init(arrs, cpaPage);
             })
+
+            upBtn.on(cc.Node.EventType.TOUCH_START, () => {
+                this.changeNode(arrs, parseInt(index), 1)
+            })
+            downBtn.on(cc.Node.EventType.TOUCH_START, () => {
+                this.changeNode(arrs, parseInt(index), -1)
+            })
+
             if (flag) {
-                this.node.getComponent(cc.ScrollView).scrollToBottom(0.1);
+                this.node.getComponent(cc.ScrollView).scrollToBottom(1);
             }
         }
         this.show();
     }
+
+    public changeNode(arrs: Array<CpaData>, index: number, flag: number): void {
+        console.log("改变node顺序")
+        let tmpData: CpaData = arrs[index];
+        arrs[index] = arrs[index - flag];
+        arrs[index - flag] = tmpData;
+        this.init(arrs, this.cpaPage, false)
+        // console.log(this.content.children[index - 1].getChildByName("input1").getComponent(cc.EditBox).string)
+        // let tmp: cc.Node = this.content.children[index-1];
+        // this.content.children[(index - 1)] = this.content.children[(index - flag - 1)];
+        // this.content.children[(index - flag - 1)] = tmp;
+        // //当前移动，
+        // this.content.children[(index - 1)].y = - (index - flag - 1) * 160;
+        // //被改变的移动
+        // this.content.children[(index - flag - 1)].y = - (index - flag - 1) * 160;
+    }
+
+
     public show(): void {
         this.node.active = true;
     }
