@@ -142,6 +142,7 @@ export function getDrewCanvas(): HTMLCanvasElement {
         canvas.height = 1024;
         canvas.style.backgroundColor = '#FF0000';
         canvas.id = "drewCanvas";
+        // canvas.style.cssText = "position:fixed;left:100%";
     }
     return document.getElementById("drewCanvas") as HTMLCanvasElement;
 }

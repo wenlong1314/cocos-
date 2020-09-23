@@ -1,4 +1,4 @@
-import { _cdn2, get, gameRoot } from "./global";
+import { _cdn2, get, gameRoot, getDrewCanvas } from "./global";
 import { main } from "./Main";
 
 
@@ -66,7 +66,7 @@ export default class CPBAPI {
     // 字是提交时填充大图
     public drewTxt(arrs: Array<string>): Promise<void> {
         return new Promise((rs, rj) => {
-            let drewCanvas = this.getDrewCanvas();
+            let drewCanvas = getDrewCanvas();
             const ctx = drewCanvas.getContext("2d");
             ctx.font = "normal bold 20px 微软雅黑";
             ctx.fillStyle = "#ffffff";
@@ -188,7 +188,12 @@ export default class CPBAPI {
         }
         this.reqCPBData["开"] = true;
         this.reqCPBData["加载页显示"] = true;
-        this.reqCPBData["黑名单"] = main.blackArray;
+        //this.reqCPBData["黑名单"] = main.blackArray;
+
+        // if (this.reqCPBData["CPA黑名单"]) {
+        //     delete this.reqCPBData["CPA黑名单"];
+        //     console.log("存在删除cpb黑名单")
+        // }
         this.reqCPBData["atlas"] = this.crc32name;
         this.reqCPBData["文字底"] = CPBAPI.ImgRectMap.get(-2);
         this.reqCPBData["cpbs"] = cpbs;
@@ -213,7 +218,7 @@ export default class CPBAPI {
                 return curr - 1;
             });
         }
-        console.log("cpb 数据");
+        console.log("cpb 数据1111");
         console.log(this.reqCPBData);
     }
     public postCPBCode(arrs): Promise<void> {
@@ -232,23 +237,9 @@ export default class CPBAPI {
             });
         })
     }
-
-    public getDrewCanvas(): HTMLCanvasElement {
-        if (document.getElementById("drewCanvas")) {
-
-        } else {
-            var canvas = document.createElement('canvas');
-            document.body.appendChild(canvas);
-            canvas.width = 1024; //☜
-            canvas.height = 1024;
-            canvas.style.backgroundColor = '#FF0000';
-            canvas.id = "drewCanvas";
-        }
-        return document.getElementById("drewCanvas") as HTMLCanvasElement;
-    }
     // 图是获取时，填充大图，修改后自动修改大图。
     public drewImg(tmpImg: HTMLImageElement, curr: number, width: number, height: number, fix?: boolean): void {
-        let drewCanvas = this.getDrewCanvas();
+        let drewCanvas = getDrewCanvas();
         const ctx = drewCanvas.getContext("2d");
         let x = Math.floor((curr - 1) / 6);
         let y = (curr - 1) % 6;

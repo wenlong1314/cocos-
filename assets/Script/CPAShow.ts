@@ -2,6 +2,7 @@ import { _cdn2, CpaData, myCRC32, get, getDrewCanvas } from "./global";
 import { prefabs } from "./prefabs";
 import CPAPage from "./CPAPage";
 import CPBAPI from "./CPBAPI";
+import Main, { main } from "./Main";
 
 const { ccclass, property } = cc._decorator;
 declare let wx: any;
@@ -73,10 +74,18 @@ export default class CPAShow extends cc.Component {
             input1.node.on('editing-did-ended', (evt: { target: cc.Node }) => {
                 input1.string = input1.string.replace(/(^\s*)|(\s*$)/g, "");
                 arrs[index].name = input1.string;
+                if (main.myId.has(input1.string)) {
+                    input2.string = main.myId.get(input1.string);
+                }
             });
             input2.node.on('editing-did-ended', (evt: { target: cc.Node }) => {
                 input2.string = input2.string.replace(/(^\s*)|(\s*$)/g, "");
                 arrs[index].appId = input2.string;
+                for (let item of main.myId.entries()) {
+                    if (item[1] == input2.string) {
+                        input1.string = item[0];
+                    }
+                }
             });
             input3.node.on('editing-did-ended', (evt: { target: cc.Node }) => {
                 input3.string = input3.string.replace(/(^\s*)|(\s*$)/g, "");

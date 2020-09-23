@@ -42,6 +42,9 @@ export default class CPAPage extends cc.Component {
         this.btn.on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
             console.log(this.cpaArray);
             let item: CpaData = {
+                cpa1: false,
+                cpa2: true,
+                hutuiqiang: true,
                 IOS: true
             };
             this.cpaArray.push(item);
@@ -76,7 +79,7 @@ export default class CPAPage extends cc.Component {
 
     }
     public myDecodeJSON(rsp): void {
-        //todo  创建一个数组，数组中保存cpa列表的所有属性
+     
         this.cpaArray = [];
         console.dir(this.node)
         let cpa1 = this.node.getChildByName("cpa1").getComponent(cc.Toggle);
@@ -105,12 +108,12 @@ export default class CPAPage extends cc.Component {
             } else {
                 cpaData.cpa1 = false;
             }
-            if (rsp.data.gameIcon2 && rsp.data.gameIcon2.itemlist.indexOf(Number(item)) > -1 || rsp.data.gameIcon1.itemlist.indexOf(item) > -1) {
+            if (rsp.data.gameIcon2 && (rsp.data.gameIcon2.itemlist.indexOf(Number(item)) > -1 || rsp.data.gameIcon2.itemlist.indexOf(item) > -1)) {
                 cpaData.cpa2 = true;
             } else {
                 cpaData.cpa2 = false;
             }
-            if (rsp.data.hutuiqiang && rsp.data.hutuiqiang.itemlist.indexOf(Number(item)) > -1 || rsp.data.gameIcon1.itemlist.indexOf(item) > -1) {
+            if (rsp.data.hutuiqiang && (rsp.data.hutuiqiang.itemlist.indexOf(Number(item)) > -1 || rsp.data.hutuiqiang.itemlist.indexOf(item) > -1)) {
                 cpaData.hutuiqiang = true;
             } else {
                 cpaData.hutuiqiang = false;
@@ -197,8 +200,6 @@ export default class CPAPage extends cc.Component {
             mainIcon.push(Number(item));
         }
         this.reqCpaData.data["addturnlist"] = currdata;
-
-
         this.reqCpaData.data["gameIcon1"]["itemlist"] = main.gameIcon1Array;
         this.reqCpaData.data["gameIcon2"]["itemlist"] = main.gameIcon2Array;
         this.reqCpaData.data["hutuiqiang"]["itemlist"] = main.hutuiqiangArray;
@@ -231,6 +232,7 @@ export default class CPAPage extends cc.Component {
         this.reqCpaData["加载页显示CPA"] = this.cpa2flag;
         this.reqCpaData["CPA关"] = this.cpa1flag;
         this.reqCpaData["CPA黑名单"] = main.blackArray;
+
         console.log("待上传数据")
         console.log(this.reqCpaData)
         this.submitCPB();

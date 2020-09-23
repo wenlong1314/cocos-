@@ -30,16 +30,21 @@ export default class Main extends cc.Component {
     public gamesNameShow: Array<any>;
     public gameNames: Map<string, string>;
     public gameNames2: { [key: string]: string } = { "天天炸飞机": "plane" };
+    public myId: Map<string, string> = new Map([["火柴人瞅你咋地","wxfd27129e829cc1d2"],["小小骑士团","wx792a315f4d38fdd8"],["奇妙塔防","wxf42ad46d298ea484"],
+                                                ["我的修车铺","wxaf25055d7ca91c38"],["天天炸飞机","wx31c8d2f8e31c9eef"],["我开坦克贼6","wx7b19834499be939b"],
+                                                ["火柴人冲突","wxca52f367ab432bca"],["火柴人你瞅啥","wx544ebe4c1ef80033"],["天天上楼梯","wxbee100b7af114d53"],
+                                                ["怪物冲突","wxadfd6c154f4f4c33"],["怪物工厂","wx7e094fe815f60f5f"],["怪物工厂2","wxbdc84506389bce7f"],
+                                                ["我特能耍剑","wx435ba05db70ce8c4"],["丧尸干仗","wxb0c3a607aa51a5f7"],["射了个箭","wxacb1b699df14bfa0"],
+                                                ["数字之城","wx8e8faa25dce1f46b"],["主公贼有钱","wxc2899037dc131dbb"]
+                                                ]);
     public blackArray: Array<number> = [1];
-
     public gameIcon1Array: Array<number>;
     public gameIcon2Array: Array<number>;
     public hutuiqiangArray: Array<number>;
     public iosArray: Array<number>;
-
-
     private settingFlag: boolean = false;
     private prefabsFlag: boolean = false;
+
     protected async onLoad(): Promise<void> {
         main = this;
         console.log("init main");
@@ -58,9 +63,7 @@ export default class Main extends cc.Component {
         this.chooseGame = this.node.getChildByName("chooseGame").getComponent(ChooseGame);
 
         this.pages = ["configPage", "gmPage", "removeStorage", "cpaPage", "sharePage"];
-
         //if(window["wx"]){wx.setEnableDebug({ enableDebug: true });} 
-
         console.log(`company=${company},currIp=${currIp},`);
         //  console.log(`company=${window["company"]}`);
         let localGame = localStorage.getItem('gameName');
@@ -85,13 +88,14 @@ export default class Main extends cc.Component {
                     "数字之城", "怪物冲突", "怪物工厂2",
                     "天天上楼梯", "我开坦克贼6", "射了个箭",
                     "我特能耍剑", "丧尸干仗", "天天炸飞机",
-                    "火柴人瞅你咋地", "小小骑士团", "奇妙塔防"];
+                    "火柴人瞅你咋地", "小小骑士团", "奇妙塔防","团战模拟器"];
                 this.chooseGameName = (this.gamesNameShow.indexOf(localGame) > 0 && localGame) || "主公贼有钱";
                 this.gameNames = new Map<string, string>([["主公贼有钱", "push"], ["火柴人冲突", "sword"], ["奇妙修车铺", "car"],
                 ["数字之城", "sudoku"], ["怪物冲突", "rush2sword"], ["怪物工厂2", "rush2"],
                 ["天天上楼梯", "climb"], ["我开坦克贼6", "tank"], ["射了个箭", "sword3"],
                 ["我特能耍剑", "fight"], ["丧尸干仗", "zombie"], ["天天炸飞机", "plane"],
-                ["火柴人瞅你咋地", "sword4"], ["小小骑士团", "kittyKnight"], ["奇妙塔防", "TowerDefence"]]);
+                ["火柴人瞅你咋地", "sword4"], ["小小骑士团", "kittyKnight"], ["奇妙塔防", "TowerDefence"]
+                , ["团战模拟器", "army"]]);
                 break;
             default:
                 this.gamesNameShow = ["主公贼有钱", "火柴人瞅你咋地", "小小骑士团"];
@@ -204,7 +208,6 @@ export default class Main extends cc.Component {
         }
     }
     public hideByMengceng(): void {
-        //todo
         console.log("this.mengceng=");
         console.dir(this.chooseGame.mengceng);
         this.chooseGame.mengceng.active = true;
@@ -212,7 +215,6 @@ export default class Main extends cc.Component {
 
     }
     public showByMengceng(): void {
-        //todo
         console.log("this.mengceng=");
         console.dir(this.chooseGame.mengceng);
         this.chooseGame.mengceng.active = false;

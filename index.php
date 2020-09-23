@@ -4,9 +4,7 @@ require_once "../common/jssdk.php";
 		"https://tiny.qimiaosenlin.com/5b7248e6372375b7248edb0de65b7248f69c5495b7248fe718m5d5b72490319047/",
 		"GMCocos","GMCocosGMCocosGMCocosGMCocos"
 	);
-$sys->cacheVersion=11;
-
-
+$sys->cacheVersion=12;
 $sys->isDD = false;
 $sys->isTB = false;
 //	$sys->isWX=false;
