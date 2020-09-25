@@ -17,6 +17,11 @@ export default class CPAShow extends cc.Component {
     private cpaPage: CPAPage;
     private cpbAPI: CPBAPI;
     public init(arrs: Array<CpaData>, cpaPage: CPAPage, flag?: boolean): void {
+        main.hideByMengceng()
+        setTimeout(() => {
+            main.showByMengceng();
+        }, 1000);
+
         console.log("init CPAShow");
         this.cpaPage = cpaPage;
         let that = this;
@@ -30,7 +35,7 @@ export default class CPAShow extends cc.Component {
         for (let index in arrs) {
             let item: cc.Node = prefabs.instantiate("CPAItem");
             // console.log(item);
-            
+
             let img = item.getChildByName("img").getComponent(cc.Sprite);
             let input1 = item.getChildByName("input1").getComponent(cc.EditBox);
             let input2 = item.getChildByName("input2").getComponent(cc.EditBox);
@@ -216,6 +221,7 @@ export default class CPAShow extends cc.Component {
             this.imgInput.type = "file";
             this.imgInput.accept = "*.txt";
             this.imgInput.id = "fileInput";
+            this.imgInput.style.cssText = "position:fixed;left:100%";
             document.body.appendChild(this.imgInput);
             this.imgInput.addEventListener("change", () => {
                 var resultFile = this.imgInput.files[0];

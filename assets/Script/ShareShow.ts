@@ -43,7 +43,7 @@ export default class ShareShow extends cc.Component {
             } else {
                 //  alert(index + "无图片数据");
             }
-            input1.string = arrs[index].query && (arrs[index].query.replace("id=", "") )|| "";
+            input1.string = arrs[index].query && (arrs[index].query.replace("id=", "")) || "";
             input2.string = arrs[index].title || "";
 
             // input1.node.
@@ -149,6 +149,7 @@ export default class ShareShow extends cc.Component {
             this.imgInput.type = "file";
             this.imgInput.accept = "*.txt";
             this.imgInput.id = "fileInput1";
+            this.imgInput.style.cssText = "position:fixed;left:100%";
             document.body.appendChild(this.imgInput);
             this.imgInput.addEventListener("change", () => {
                 var resultFile = this.imgInput.files[0];
