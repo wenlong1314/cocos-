@@ -23,10 +23,6 @@ export default class CPBAPI {
         let successArray = [];
         this.cpa1flag = flag1;
         this.cpa2flag = flag2;
-        // let chunks = new Blob(['1111'])
-        // this.reqAllData = { "cpbAtlas": chunks, "cpbAtlasName": "cpbTmp" };
-        // this.postTinyImg(this.reqAllData);
-
         this.loadBottom("89b68afc-e961-480b-8fca-d5a82cef726e").then(
             (SpriteFrame: any) => {
                 //  console.log(Texture2D["_image"]);

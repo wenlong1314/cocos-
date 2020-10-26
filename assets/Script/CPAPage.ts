@@ -238,7 +238,6 @@ export default class CPAPage extends cc.Component {
         this.reqCpaData["加载页显示CPA"] = this.cpa2flag;
         this.reqCpaData["CPA关"] = !this.cpa1flag;
         this.reqCpaData["CPA黑名单"] = main.blackArray;
-
         console.log("待上传数据")
         console.log(this.reqCpaData)
         this.submitCPB();

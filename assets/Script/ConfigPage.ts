@@ -101,7 +101,6 @@ export default class ConfigPage extends cc.Component {
         this.submit.children[0].active = true;
         this.time.string = "修改与：" + new Date().toLocaleString();
         console.log(node + main.settings["" + node]);
-
     }
 
     public show(): void {
@@ -120,7 +119,6 @@ export default class ConfigPage extends cc.Component {
         this.input5.string = (main.settings.误触白名单1 || 0) + "";
         this.input6.string = (main.settings.误触白名单2 || 0) + "";
         for (const node of this.nodes) {
-            console.log(node)
             this["" + node].children[1].active = main.settings["" + node];
             this["" + node].children[0].active = !main.settings["" + node];
 

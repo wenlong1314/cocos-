@@ -44,7 +44,6 @@ export default class Main extends cc.Component {
     public iosArray: Array<number>;
     private settingFlag: boolean = false;
     private prefabsFlag: boolean = false;
-
     protected async onLoad(): Promise<void> {
         main = this;
         console.log("init main");
@@ -67,7 +66,6 @@ export default class Main extends cc.Component {
         console.log(`company=${company},currIp=${currIp},`);
         //  console.log(`company=${window["company"]}`);
         let localGame = localStorage.getItem('gameName');
-
 
         switch (company) {
             case "梦嘉":

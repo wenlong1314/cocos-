@@ -38,7 +38,6 @@ export default class CPAShow extends cc.Component {
         
             let item: cc.Node = prefabs.instantiate("CPAItem");
             // console.log(item);
-
             let img = item.getChildByName("img").getComponent(cc.Sprite);
             let input1 = item.getChildByName("input1").getComponent(cc.EditBox);
             let input2 = item.getChildByName("input2").getComponent(cc.EditBox);
@@ -54,11 +53,8 @@ export default class CPAShow extends cc.Component {
 
             if (arrs[index].urlBase64) {
                 console.log("新增的数据")
-                //test
-                this.cpaImg[index] = arrs[index].urlBase64;
                 this.base64ShowImg(arrs[index].urlBase64, arrs[index].imgUrl, img);
             } else if (arrs[index].imgUrl) {
-                this.cpaImg[index] = arrs[index].imgUrl;
                 // console.log("动态加载图片的方法")
                 var url = "https://cdn-tiny.qimiaosenlin.com/cdn/cpa/" + arrs[index].imgUrl;//图片路径
                 // cc.loader
@@ -70,7 +66,6 @@ export default class CPAShow extends cc.Component {
                     //  console.log(Texture2D["_image"]);
                     that.cpbAPI.drewImg(Texture2D["_image"], parseInt(index), Texture2D.width, Texture2D.height);
                 });
-
             } else {
                 //  alert(index + "无图片数据");
             }
@@ -87,18 +82,10 @@ export default class CPAShow extends cc.Component {
             input1.node.on('editing-did-ended', (evt: { target: cc.Node }) => {
                 input1.string = input1.string.replace(/(^\s*)|(\s*$)/g, "");
                 arrs[index].name = input1.string;
-                if (main.myId.has(input1.string)) {
-                    input2.string = main.myId.get(input1.string);
-                }
             });
             input2.node.on('editing-did-ended', (evt: { target: cc.Node }) => {
                 input2.string = input2.string.replace(/(^\s*)|(\s*$)/g, "");
                 arrs[index].appId = input2.string;
-                for (let item of main.myId.entries()) {
-                    if (item[1] == input2.string) {
-                        input1.string = item[0];
-                    }
-                }
             });
             input3.node.on('editing-did-ended', (evt: { target: cc.Node }) => {
                 input3.string = input3.string.replace(/(^\s*)|(\s*$)/g, "");
