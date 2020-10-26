@@ -24,6 +24,9 @@ export default class CPAPage extends cc.Component {
     public imgDatas: Array<Array<string>> = [];
     public reqCpaData: any;
     public cpbNames: Array<string>;
+
+    public cpa1: cc.Toggle;
+    public cpa2: cc.Toggle;
     public cpa1flag: boolean;
     public cpa2flag: boolean;
 
@@ -58,6 +61,16 @@ export default class CPAPage extends cc.Component {
             main.hideByMengceng();
             this.showSubmit();
         });
+        this.cpa1 = this.node.getChildByName("cpa1").getComponent(cc.Toggle);
+        this.cpa2 = this.node.getChildByName("cpa2").getComponent(cc.Toggle);
+        this.cpa1.node.on('toggle', () => {
+            this.cpa1flag = !this.cpa1flag;
+            console.log("CPA关", !this.cpa1flag)
+        }, this);
+        this.cpa2.node.on('toggle', () => {
+            this.cpa2flag = !this.cpa2flag;
+            console.log("加载页是否显示", this.cpa2flag)
+        }, this);
         this.updata()
     }
     public updata(): void {
@@ -79,22 +92,15 @@ export default class CPAPage extends cc.Component {
 
     }
     public myDecodeJSON(rsp): void {
-     
+
         this.cpaArray = [];
         console.dir(this.node)
-        let cpa1 = this.node.getChildByName("cpa1").getComponent(cc.Toggle);
-        let cpa2 = this.node.getChildByName("cpa2").getComponent(cc.Toggle);
-        this.cpa1flag = rsp.CPA关;
+        this.cpa1flag = !rsp.CPA关;
         this.cpa2flag = rsp.加载页显示CPA;
-        this.cpa1flag && cpa1.uncheck();
-        !this.cpa2flag && cpa2.uncheck();
-        cpa1.node.on('toggle', () => {
-            this.cpa1flag = !this.cpa1flag;
-        }, this);
-        cpa2.node.on('toggle', () => {
-            this.cpa2flag = !this.cpa2flag;
-        }, this);
-
+        this.cpa1flag && this.cpa1.check();
+        this.cpa2flag && this.cpa2.check();
+        console.log("rsp.加载页显示CPA===============" + rsp.加载页显示CPA)
+        console.log("cpa1flag===============" + this.cpa1flag)
         let array = rsp.data.addturnlist;
         for (let item in array) {
             let cpaData: CpaData = {};
@@ -230,7 +236,7 @@ export default class CPAPage extends cc.Component {
         this.reqCpaData.data["mainIcon"]["itemlist"] = mainIcon;
 
         this.reqCpaData["加载页显示CPA"] = this.cpa2flag;
-        this.reqCpaData["CPA关"] = this.cpa1flag;
+        this.reqCpaData["CPA关"] = !this.cpa1flag;
         this.reqCpaData["CPA黑名单"] = main.blackArray;
 
         console.log("待上传数据")
@@ -258,7 +264,7 @@ export default class CPAPage extends cc.Component {
         });
     }
     public submitCPB(): void {
-        this.cpbAPI.cpbSubmit(this.cpaArray, this.cpbNames, this.cpaName.replace("a", "b"), () => {
+        this.cpbAPI.cpbSubmit(this.cpaArray, this.cpa1flag, this.cpa2flag, this.cpbNames, this.cpaName.replace("a", "b"), () => {
             main.showByMengceng();
             main.gameUpdata();
             if (this.cpa1ToMore) {

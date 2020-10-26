@@ -16,6 +16,7 @@ export default class CPAShow extends cc.Component {
     private imgInput: HTMLInputElement;
     private cpaPage: CPAPage;
     private cpbAPI: CPBAPI;
+    private cpaImg: Array<any>=[];
     public init(arrs: Array<CpaData>, cpaPage: CPAPage, flag?: boolean): void {
         main.hideByMengceng()
         setTimeout(() => {
@@ -33,6 +34,8 @@ export default class CPAShow extends cc.Component {
         this.initInputHTML();
         // console.log(arrs);
         for (let index in arrs) {
+
+        
             let item: cc.Node = prefabs.instantiate("CPAItem");
             // console.log(item);
 
@@ -51,13 +54,15 @@ export default class CPAShow extends cc.Component {
 
             if (arrs[index].urlBase64) {
                 console.log("新增的数据")
+                //test
+                this.cpaImg[index] = arrs[index].urlBase64;
                 this.base64ShowImg(arrs[index].urlBase64, arrs[index].imgUrl, img);
             } else if (arrs[index].imgUrl) {
+                this.cpaImg[index] = arrs[index].imgUrl;
                 // console.log("动态加载图片的方法")
                 var url = "https://cdn-tiny.qimiaosenlin.com/cdn/cpa/" + arrs[index].imgUrl;//图片路径
                 // cc.loader
                 //动态加载图片的方法
-
                 cc.loader.load(url, function (err, Texture2D) {
                     //  console.log(err)
                     img.spriteFrame = new cc.SpriteFrame(Texture2D);
@@ -65,6 +70,7 @@ export default class CPAShow extends cc.Component {
                     //  console.log(Texture2D["_image"]);
                     that.cpbAPI.drewImg(Texture2D["_image"], parseInt(index), Texture2D.width, Texture2D.height);
                 });
+
             } else {
                 //  alert(index + "无图片数据");
             }
@@ -137,10 +143,10 @@ export default class CPAShow extends cc.Component {
                 this.init(arrs, cpaPage);
             })
 
-            upBtn.on(cc.Node.EventType.TOUCH_START, () => {
+            upBtn.on(cc.Node.EventType.TOUCH_END, () => {
                 this.changeNode(arrs, parseInt(index), 1)
             })
-            downBtn.on(cc.Node.EventType.TOUCH_START, () => {
+            downBtn.on(cc.Node.EventType.TOUCH_END, () => {
                 this.changeNode(arrs, parseInt(index), -1)
             })
 

@@ -14,11 +14,15 @@ export default class CPBAPI {
     public crc32name: string;
     public cpbName: string;
 
-    public cpbSubmit(reqCpaData: any, nameArrs: Array<string>, cpbName: string, callback?: any) {
+    public cpa1flag: boolean;
+    public cpa2flag: boolean;
+
+    public cpbSubmit(reqCpaData: any, flag1: boolean, flag2: boolean, nameArrs: Array<string>, cpbName: string, callback?: any) {
         console.log("cpb提交开始")
         this.cpbName = cpbName;
         let successArray = [];
-
+        this.cpa1flag = flag1;
+        this.cpa2flag = flag2;
         // let chunks = new Blob(['1111'])
         // this.reqAllData = { "cpbAtlas": chunks, "cpbAtlasName": "cpbTmp" };
         // this.postTinyImg(this.reqAllData);
@@ -150,7 +154,6 @@ export default class CPBAPI {
                     } else {
                         reject()
                     }
-
                     // resolve.apply(xhr, xhr.responseText);
                 }
             };
@@ -186,8 +189,8 @@ export default class CPBAPI {
             tmp["iconRect"] = CPBAPI.ImgRectMap.get(Number(curr));
             cpbs.push(tmp);
         }
-        this.reqCPBData["开"] = true;
-        this.reqCPBData["加载页显示"] = true;
+        this.reqCPBData["开"] = this.cpa1flag;
+        this.reqCPBData["加载页显示"] = this.cpa2flag;
         //this.reqCPBData["黑名单"] = main.blackArray;
 
         // if (this.reqCPBData["CPA黑名单"]) {

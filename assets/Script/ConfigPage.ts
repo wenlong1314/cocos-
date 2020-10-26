@@ -12,7 +12,7 @@ export default class ConfigPage extends cc.Component {
     private a: cc.Node;
     private 误触关: cc.Node;
     private 分享关: cc.Node;
-    private cpa关: cc.Node;
+    private CPA关: cc.Node;
     private input1: cc.EditBox;
     private input2: cc.EditBox;
     private input3: cc.EditBox;
@@ -32,7 +32,7 @@ export default class ConfigPage extends cc.Component {
         this.a = this.node.getChildByName("总开关");
         this.误触关 = this.node.getChildByName("误触开关");
         this.分享关 = this.node.getChildByName("分享开关");
-        this.cpa关 = this.node.getChildByName("cpa开关");
+        this.CPA关 = this.node.getChildByName("cpa开关");
         this.submit = this.node.getChildByName("submit");
         this.input1 = this.node.getChildByName("input1").getComponent(cc.EditBox);
         this.input2 = this.node.getChildByName("input2").getComponent(cc.EditBox);
@@ -40,7 +40,7 @@ export default class ConfigPage extends cc.Component {
         this.input4 = this.node.getChildByName("input4").getComponent(cc.EditBox);
         this.input5 = this.node.getChildByName("input5").getComponent(cc.EditBox);
         this.input6 = this.node.getChildByName("input6").getComponent(cc.EditBox);
-        this.nodes = ["a", "误触关", "分享关", "cpa关"];
+        this.nodes = ["a", "误触关", "分享关", "CPA关"];
         this.inputs = [this.input1, this.input2, this.input3, this.input4, this.input5, this.input6];
         this.settingsInput = ["微信合成点击完毕出现Banner", "游戏左下角Banner显示概率", "CPA黑名单", "误触白名单", "误触白名单1", "误触白名单2"];
 
@@ -49,6 +49,9 @@ export default class ConfigPage extends cc.Component {
         this.submit.children[0].on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
             //console.log(main.settings);
             main.settings.系统配置版本 = main.getTime();
+            if (main.settings["cpa关"]) {
+                delete main.settings["cpa关"];
+            }
             console.log(main.settings);
             post({ op: "setSettings", currIp: currIp, company: company, game: main.chooseGameID, code: JSON.stringify(main.settings) }, rsp => {
 
@@ -78,7 +81,7 @@ export default class ConfigPage extends cc.Component {
                     let nums = input.string.replace(/[^\d,,，。.;\n\t-]/g, "").split(/[,，。.;\n\t]/).filter((value) => {
                         if (value) { return value }
                     })
-                    let tmp=nums.map((curr) => {
+                    let tmp = nums.map((curr) => {
                         return Number(curr);
                     })
                     main.settings["" + this.settingsInput[input["index"]]] = tmp;
@@ -98,6 +101,7 @@ export default class ConfigPage extends cc.Component {
         this.submit.children[0].active = true;
         this.time.string = "修改与：" + new Date().toLocaleString();
         console.log(node + main.settings["" + node]);
+
     }
 
     public show(): void {
@@ -116,6 +120,7 @@ export default class ConfigPage extends cc.Component {
         this.input5.string = (main.settings.误触白名单1 || 0) + "";
         this.input6.string = (main.settings.误触白名单2 || 0) + "";
         for (const node of this.nodes) {
+            console.log(node)
             this["" + node].children[1].active = main.settings["" + node];
             this["" + node].children[0].active = !main.settings["" + node];
 
@@ -124,6 +129,7 @@ export default class ConfigPage extends cc.Component {
             this["" + node].on(cc.Node.EventType.TOUCH_START, (evt: { target: cc.Node }) => {
                 this.changeNode(node);
             });
+           
         }
         let nums = this.input3.string.replace(/[^\d,,，。.;\n\t-]/g, "").split(/[,，。.;\n\t]/).filter((value) => {
             if (value) { return value }
