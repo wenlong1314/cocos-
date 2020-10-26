@@ -16,7 +16,7 @@ export default class CPAShow extends cc.Component {
     private imgInput: HTMLInputElement;
     private cpaPage: CPAPage;
     private cpbAPI: CPBAPI;
-    private cpaImg: Array<any>=[];
+    private cpaImg: Array<any> = [];
     public init(arrs: Array<CpaData>, cpaPage: CPAPage, flag?: boolean): void {
         main.hideByMengceng()
         setTimeout(() => {
@@ -35,7 +35,7 @@ export default class CPAShow extends cc.Component {
         // console.log(arrs);
         for (let index in arrs) {
 
-        
+
             let item: cc.Node = prefabs.instantiate("CPAItem");
             // console.log(item);
             let img = item.getChildByName("img").getComponent(cc.Sprite);
@@ -82,10 +82,20 @@ export default class CPAShow extends cc.Component {
             input1.node.on('editing-did-ended', (evt: { target: cc.Node }) => {
                 input1.string = input1.string.replace(/(^\s*)|(\s*$)/g, "");
                 arrs[index].name = input1.string;
+                if (main.myId.has(input1.string)) {
+                    input2.string = main.myId.get(input1.string);
+                    arrs[index].appId = input2.string;
+                }
             });
             input2.node.on('editing-did-ended', (evt: { target: cc.Node }) => {
                 input2.string = input2.string.replace(/(^\s*)|(\s*$)/g, "");
                 arrs[index].appId = input2.string;
+                for (let item of main.myId.entries()) {
+                    if (item[1] == input2.string) {
+                        input1.string = item[0];
+                        arrs[index].name = input1.string;
+                    }
+                }
             });
             input3.node.on('editing-did-ended', (evt: { target: cc.Node }) => {
                 input3.string = input3.string.replace(/(^\s*)|(\s*$)/g, "");

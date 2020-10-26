@@ -35,7 +35,7 @@ export default class Main extends cc.Component {
     ["火柴人冲突", "wxca52f367ab432bca"], ["火柴人你瞅啥", "wx544ebe4c1ef80033"], ["天天上楼梯", "wxbee100b7af114d53"],
     ["怪物冲突", "wxadfd6c154f4f4c33"], ["怪物工厂", "wx7e094fe815f60f5f"], ["怪物工厂2", "wxbdc84506389bce7f"],
     ["我特能耍剑", "wx435ba05db70ce8c4"], ["丧尸干仗", "wxb0c3a607aa51a5f7"], ["射了个箭", "wxacb1b699df14bfa0"],
-    ["数字之城", "wx8e8faa25dce1f46b"], ["主公贼有钱", "wxc2899037dc131dbb"]
+    ["数字之城", "wx8e8faa25dce1f46b"], ["主公贼有钱", "wxc2899037dc131dbb"], ["龙兽争霸", "wx1c69f41d69ec54b8"],
     ]);
     public blackArray: Array<number> = [1];
     public gameIcon1Array: Array<number>;
